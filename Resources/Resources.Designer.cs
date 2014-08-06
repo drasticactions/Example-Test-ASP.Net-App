@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error has occurred.
+        /// </summary>
+        public static string ErrorMessageDeleteGeneric {
+            get {
+                return ResourceManager.GetString("ErrorMessageDeleteGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         public static string FirstName {
@@ -174,6 +183,15 @@ namespace Resources {
         public static string PositionStatus {
             get {
                 return ResourceManager.GetString("PositionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We could not delete your resume. It may be attached to an open position..
+        /// </summary>
+        public static string ResumeDeleteOpenPositionError {
+            get {
+                return ResourceManager.GetString("ResumeDeleteOpenPositionError", resourceCulture);
             }
         }
         

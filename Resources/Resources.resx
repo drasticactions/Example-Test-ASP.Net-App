@@ -174,4 +174,10 @@
   <data name="PositionStatus" xml:space="preserve">
     <value>Position Status</value>
   </data>
+  <data name="ResumeDeleteOpenPositionError" xml:space="preserve">
+    <value>We could not delete your resume. It may be attached to an open position.</value>
+  </data>
+  <data name="ErrorMessageDeleteGeneric" xml:space="preserve">
+    <value>An error has occurred</value>
+  </data>
 </root>

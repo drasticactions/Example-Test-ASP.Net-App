@@ -27,15 +27,8 @@
 
     </dl>
 </div>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-actions no-color">
-        <input type="submit" value="Apply" class="btn btn-default" /> |
-    </div>
-}
 <p>
+    @Html.ActionLink("Apply", "Apply", new { id = Model.Id })
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

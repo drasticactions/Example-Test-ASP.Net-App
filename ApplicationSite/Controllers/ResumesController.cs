@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,16 +165,29 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            // TODO: Add error handling if we can't find the file.
-
             Resume resume = await _db.Resumes.FindAsync(id);
-            var currentUser = _db.Users.Find(User.Identity.GetUserId());
-            var path = string.Concat(currentUser.Id, "/", resume.FileName);
-            var cloudStorage = new CloudStorage("resume", false);
-            cloudStorage.DeleteFile(path);
-            _db.Resumes.Remove(resume);
-            await _db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            try
+            {
+                var currentUser = _db.Users.Find(User.Identity.GetUserId());
+                var path = string.Concat(currentUser.Id, "/", resume.FileName);
+                var cloudStorage = new CloudStorage("resume", false);
+                _db.Resumes.Remove(resume);
+                await _db.SaveChangesAsync();
+                cloudStorage.DeleteFile(path);
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException)
+            {
+                // Resume is attached to an open position, so we can't delete it.
+                // TODO: Make better error messages.
+                ModelState.AddModelError("", Resources.Resources.ResumeDeleteOpenPositionError);
+                return View(resume);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", Resources.Resources.ErrorMessageDeleteGeneric);
+                return View(resume);
+            }
         }
 
         [HttpGet]
