@@ -7,8 +7,7 @@ namespace ApplicationSite
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            // TODO: Add filters for RequireHTTPS
-            filters.Add(new System.Web.Mvc.AuthorizeAttribute());
+            filters.Add(new AuthorizeAttribute());
             filters.Add(new RequireHttpsAttribute());
         }
     }
