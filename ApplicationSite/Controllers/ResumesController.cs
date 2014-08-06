@@ -17,12 +17,12 @@ namespace ApplicationSite.Controllers
 {
     public class ResumesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: Resumes
         public async Task<ActionResult> Index()
         {
-            return View(await db.Resumes.ToListAsync());
+            return View(await _db.Resumes.ToListAsync());
         }
 
         // GET: Resumes/Details/5
@@ -32,7 +32,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resume resume = await db.Resumes.FindAsync(id);
+            Resume resume = await _db.Resumes.FindAsync(id);
             if (resume == null)
             {
                 return HttpNotFound();
@@ -64,7 +64,7 @@ namespace ApplicationSite.Controllers
                 return View(resume);
             }
 
-            var currentUser = db.Users.Find(User.Identity.GetUserId());
+            var currentUser = _db.Users.Find(User.Identity.GetUserId());
 
             // TODO: Placeholder for more advance check. Not sure if it's needed, but we don't
             // want users uploading things that are not pdfs.
@@ -92,8 +92,8 @@ namespace ApplicationSite.Controllers
                 //resumeFile.SaveAs(path);
             }
             newResume.Path = resumeFilePath;
-            db.Resumes.Add(newResume);
-            await db.SaveChangesAsync();
+            _db.Resumes.Add(newResume);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -118,7 +118,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resume resume = await db.Resumes.FindAsync(id);
+            Resume resume = await _db.Resumes.FindAsync(id);
             if (resume == null)
             {
                 return HttpNotFound();
@@ -135,8 +135,8 @@ namespace ApplicationSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(resume).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _db.Entry(resume).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(resume);
@@ -149,7 +149,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Resume resume = await db.Resumes.FindAsync(id);
+            Resume resume = await _db.Resumes.FindAsync(id);
             if (resume == null)
             {
                 return HttpNotFound();
@@ -162,9 +162,9 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Resume resume = await db.Resumes.FindAsync(id);
-            db.Resumes.Remove(resume);
-            await db.SaveChangesAsync();
+            Resume resume = await _db.Resumes.FindAsync(id);
+            _db.Resumes.Remove(resume);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -172,7 +172,7 @@ namespace ApplicationSite.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
