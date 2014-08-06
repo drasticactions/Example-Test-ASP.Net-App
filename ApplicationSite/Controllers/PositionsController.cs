@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
@@ -34,6 +35,7 @@ namespace ApplicationSite.Controllers
                 _userManager = value;
             }
         }
+
 
         // GET: Positions
         [AllowAnonymous]
@@ -170,7 +172,7 @@ namespace ApplicationSite.Controllers
 
             var position = await _db.Positions.FindAsync(id);
             var resumes = await _db.Resumes.ToListAsync();
-            var list = resumes.Select(resume => new SelectListItem {Value = resume.Id.ToString(), Text = resume.Title}).ToList();
+            var list = resumes.Select(resume => new SelectListItem {Value = resume.Id.ToString(CultureInfo.InvariantCulture), Text = resume.Title}).ToList();
             var selectList = new SelectList(list, "Value", "Text", 0);
             var appliedCandidateViewModel = new AppliedCandidateViewModel()
             {
