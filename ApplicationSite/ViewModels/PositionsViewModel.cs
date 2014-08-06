@@ -22,5 +22,13 @@ namespace ApplicationSite.ViewModels
 
         [Display(ResourceType = typeof (Resources.Resources), Name = "PositionStatus")]
         public PositionStatus PositionStatus { get; set; }
+
+        public void MapTo(int id, string title, string description, PositionStatus positionStatus)
+        {
+            this.Id = id;
+            this.Title = title;
+            this.Description = description;
+            this.PositionStatus = positionStatus;
+        }
     }
 }

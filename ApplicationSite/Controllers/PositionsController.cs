@@ -79,19 +79,15 @@ namespace ApplicationSite.Controllers
         [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,PositionStatus")] PositionsViewModel positionVm)
         {
-            var position = new Positions()
+            if (!ModelState.IsValid)
             {
-                Description = positionVm.Description,
-                Title = positionVm.Title,
-                PositionStatus = (int)positionVm.PositionStatus
-            };
-            if (ModelState.IsValid)
-            {
-                _db.Positions.Add(position);
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return View(positionVm);
             }
-            return View(positionVm);
+            var position = new Positions();
+            position.MapTo(positionVm.Id, positionVm.Title, positionVm.Description, positionVm.PositionStatus);
+            _db.Positions.Add(position);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: Positions/Edit/5
@@ -122,15 +118,14 @@ namespace ApplicationSite.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Employee")]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description")] PositionsViewModel positions)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,PositionStatus")] PositionsViewModel positionVm)
         {
-            var position = new Positions()
+            if (!ModelState.IsValid)
             {
-                Description = positions.Description,
-                Id = positions.Id,
-                Title = positions.Title
-            };
-            if (!ModelState.IsValid) return View(positions);
+                return View(positionVm);
+            }
+            var position = new Positions();
+            position.MapTo(positionVm.Id, positionVm.Title, positionVm.Description, positionVm.PositionStatus);
             _db.Entry(position).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -144,18 +139,14 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Positions positions = await _db.Positions.FindAsync(id);
-            if (positions == null)
+            Positions position = await _db.Positions.FindAsync(id);
+            if (position == null)
             {
                 return HttpNotFound();
             }
-            var position = new PositionsViewModel()
-            {
-                Description = positions.Description,
-                Id = positions.Id,
-                Title = positions.Title
-            };
-            return View(position);
+            var positionVm = new PositionsViewModel();
+            positionVm.MapTo(position.Id, position.Title, position.Description, (PositionStatus)position.PositionStatus);
+            return View(positionVm);
         }
 
         // POST: Positions/Delete/5

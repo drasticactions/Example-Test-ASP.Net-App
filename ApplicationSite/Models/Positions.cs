@@ -14,6 +14,14 @@ namespace ApplicationSite.Models
         public string Description { get; set; }
 
         public int PositionStatus { get; set; }
+
+        public void MapTo(int id, string title, string description, PositionStatus positionStatus)
+        {
+            this.Id = id;
+            this.Title = title;
+            this.Description = description;
+            this.PositionStatus = (int)positionStatus;
+        }
     }
 
     public enum PositionStatus
