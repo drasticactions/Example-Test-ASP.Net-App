@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ApplicationSite.Models;
+using ApplicationSite.Tools;
 using ApplicationSite.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -86,10 +87,11 @@ namespace ApplicationSite.Controllers
             var resumeFilePath = string.Empty;
             if (resumeFile.ContentLength > 0)
             {
-                // TODO: Only for testing, we are not uploading documents yet.
-                var path = "/fake/path";
+                // TODO: Is using the ID dangerous?
+                var path = currentUser.Id;
+                var cloudStorage = new CloudStorage("resume", false);
+                cloudStorage.UploadFile(resumeFile, path);
                 resumeFilePath = path;
-                //resumeFile.SaveAs(path);
             }
             newResume.Path = resumeFilePath;
             _db.Resumes.Add(newResume);
@@ -162,10 +164,31 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
+            // TODO: Add error handling if we can't find the file.
+
             Resume resume = await _db.Resumes.FindAsync(id);
+            var currentUser = _db.Users.Find(User.Identity.GetUserId());
+            var path = string.Concat(currentUser.Id, "/", resume.FileName);
+            var cloudStorage = new CloudStorage("resume", false);
+            cloudStorage.DeleteFile(path);
             _db.Resumes.Remove(resume);
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Download(int id)
+        {
+            // TODO: Add error handling if we can't find the file.
+
+            var resume = await _db.Resumes.FindAsync(id);
+            var currentUser = _db.Users.Find(User.Identity.GetUserId());
+            var path = string.Concat(currentUser.Id, "/", resume.FileName);
+            var cloudStorage = new CloudStorage("resume", false);
+            var blob = cloudStorage.GetBlob(path);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + resume.FileName);
+            blob.DownloadToStream(Response.OutputStream);
+            return new EmptyResult();
         }
 
         protected override void Dispose(bool disposing)
@@ -177,4 +200,5 @@ namespace ApplicationSite.Controllers
             base.Dispose(disposing);
         }
     }
+    
 }
