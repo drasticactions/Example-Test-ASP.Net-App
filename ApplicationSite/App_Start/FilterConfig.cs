@@ -8,8 +8,8 @@ namespace ApplicationSite
         {
             filters.Add(new HandleErrorAttribute());
             // TODO: Add filters for RequireHTTPS
-            //filters.Add(new System.Web.Mvc.AuthorizeAttribute());
-            //filters.Add(new RequireHttpsAttribute());
+            filters.Add(new System.Web.Mvc.AuthorizeAttribute());
+            filters.Add(new RequireHttpsAttribute());
         }
     }
 }

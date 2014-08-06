@@ -4,3 +4,10 @@ C:\Users\Timothy\Documents\GitHub\ApplicationSite\Resources\obj\Debug\Resources.
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Resources\obj\Debug\Resources.csproj.GenerateResource.Cache
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Resources\obj\Debug\Resources.dll
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Resources\obj\Debug\Resources.pdb
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\bin\Debug\Resources.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\bin\Debug\Resources.pdb
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Debug\Resources.csprojResolveAssemblyReference.cache
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Debug\Resources.Resources.resources
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Debug\Resources.csproj.GenerateResource.Cache
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Debug\Resources.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Debug\Resources.pdb
