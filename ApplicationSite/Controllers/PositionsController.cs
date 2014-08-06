@@ -83,7 +83,7 @@ namespace ApplicationSite.Controllers
             {
                 Description = positionVm.Description,
                 Title = positionVm.Title,
-                PositionStatus = positionVm.PositionStatus
+                PositionStatus = (int)positionVm.PositionStatus
             };
             if (ModelState.IsValid)
             {

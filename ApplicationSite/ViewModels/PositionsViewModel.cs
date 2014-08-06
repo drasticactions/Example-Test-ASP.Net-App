@@ -21,6 +21,6 @@ namespace ApplicationSite.ViewModels
         public string Description { get; set; }
 
         [Display(ResourceType = typeof (Resources.Resources), Name = "PositionStatus")]
-        public int PositionStatus { get; set; }
+        public PositionStatus PositionStatus { get; set; }
     }
 }
