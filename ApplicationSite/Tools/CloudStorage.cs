@@ -61,7 +61,7 @@ namespace ApplicationSite.Tools
             try
             {
                 if (file == null) return false;
-                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(string.Concat(path, "/", file.FileName));
+                CloudBlockBlob blockBlob = _container.GetBlockBlobReference(path);
                 blockBlob.UploadFromStream(file.InputStream);
                 return true;
             }

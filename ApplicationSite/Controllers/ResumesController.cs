@@ -89,7 +89,7 @@ namespace ApplicationSite.Controllers
             if (resumeFile.ContentLength > 0)
             {
                 // TODO: Is using the ID dangerous?
-                var path = currentUser.Id;
+                var path = Path.GetRandomFileName();
                 var cloudStorage = new CloudStorage("resume", false);
                 cloudStorage.UploadFile(resumeFile, path);
                 resumeFilePath = path;
@@ -168,12 +168,10 @@ namespace ApplicationSite.Controllers
             Resume resume = await _db.Resumes.FindAsync(id);
             try
             {
-                var currentUser = _db.Users.Find(User.Identity.GetUserId());
-                var path = string.Concat(currentUser.Id, "/", resume.FileName);
                 var cloudStorage = new CloudStorage("resume", false);
                 _db.Resumes.Remove(resume);
                 await _db.SaveChangesAsync();
-                cloudStorage.DeleteFile(path);
+                cloudStorage.DeleteFile(resume.Path);
                 return RedirectToAction("Index");
             }
             catch (DbUpdateException)
@@ -196,10 +194,8 @@ namespace ApplicationSite.Controllers
             // TODO: Add error handling if we can't find the file.
 
             var resume = await _db.Resumes.FindAsync(id);
-            var currentUser = _db.Users.Find(User.Identity.GetUserId());
-            var path = string.Concat(currentUser.Id, "/", resume.FileName);
             var cloudStorage = new CloudStorage("resume", false);
-            var blob = cloudStorage.GetBlob(path);
+            var blob = cloudStorage.GetBlob(resume.Path);
             Response.AddHeader("Content-Disposition", "attachment; filename=" + resume.FileName);
             blob.DownloadToStream(Response.OutputStream);
             return new EmptyResult();
