@@ -215,6 +215,9 @@
     <Content Include="Views\AppliedCandidate\Details.cshtml" />
     <Content Include="Views\AppliedCandidate\Edit.cshtml" />
     <Content Include="Views\AppliedCandidate\Index.cshtml" />
+    <Content Include="Views\RolesAdmin\Delete.cshtml" />
+    <Content Include="Views\RolesAdmin\Details.cshtml" />
+    <Content Include="Views\RolesAdmin\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
