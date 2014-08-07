@@ -13,14 +13,14 @@ namespace ApplicationSite.Models
         [Required(AllowEmptyStrings = false)]
         public string Description { get; set; }
 
-        public int PositionStatus { get; set; }
+        public PositionStatus PositionStatus { get; set; }
 
         public void MapTo(int id, string title, string description, PositionStatus positionStatus)
         {
             this.Id = id;
             this.Title = title;
             this.Description = description;
-            this.PositionStatus = (int)positionStatus;
+            this.PositionStatus = positionStatus;
         }
     }
 

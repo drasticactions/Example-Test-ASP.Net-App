@@ -17,7 +17,7 @@ namespace ApplicationSite.Models
 
         public virtual Positions Position { get; set; }
 
-        public int AppliedCandidateState { get; set; }
+        public AppliedCandidateStateOptions AppliedCandidateState { get; set; }
     }
 
     /// <summary>

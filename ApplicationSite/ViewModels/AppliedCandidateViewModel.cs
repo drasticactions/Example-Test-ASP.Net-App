@@ -14,9 +14,11 @@ namespace ApplicationSite.ViewModels
         [Display(Name = "Resumes")]
         public SelectList ResumeSelectList { get; set; }
 
-        public int DefaultSelectItem = 0;
+        public int DefaultSelectItem { get; set; }
 
         [Display(Name = "Position")]
         public Positions Position { get; set; }
+
+        public ApplicationUser CurrentUser { get; set; }
     }
 }

@@ -172,21 +172,24 @@ namespace ApplicationSite.Controllers
 
             var position = await _db.Positions.FindAsync(id);
             var resumes = await _db.Resumes.ToListAsync();
-            var list = resumes.Select(resume => new SelectListItem {Value = resume.Id.ToString(CultureInfo.InvariantCulture), Text = resume.Title}).ToList();
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var list = resumes.Where(resume => resume.User.Id == user.Id).Select(resume => new SelectListItem {Value = resume.Id.ToString(CultureInfo.InvariantCulture), Text = resume.Title}).ToList();
             var selectList = new SelectList(list, "Value", "Text", 0);
             var appliedCandidateViewModel = new AppliedCandidateViewModel()
             {
                 DefaultSelectItem = 0,
                 Position = position,
-                ResumeSelectList = selectList
+                ResumeSelectList = selectList,
+                CurrentUser = user
             };
             return View(appliedCandidateViewModel);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin, Employee, Candidate")]
-        public async Task<ActionResult> Apply(AppliedCandidateViewModel appliedCandidateViewModel)
+        public async Task<ActionResult> Apply([Bind(Include = "DefaultSelectItem,Position,CurrentUser")]AppliedCandidateViewModel appliedCandidateViewModel)
         {
+            
             if (!ModelState.IsValid)
             {
                 return View(appliedCandidateViewModel);
@@ -194,15 +197,15 @@ namespace ApplicationSite.Controllers
             // TODO: These are hard coded and are not using the view models
             // Instead we are just pulling the first value from the database.
             // This is only for testing, it needs to be updated.
-
-            var resume = _db.Resumes.First();
-            var position = _db.Positions.First();
+            var position = await _db.Positions.FirstAsync(node => node.Id == appliedCandidateViewModel.Position.Id);
+            var resume = await _db.Resumes.FirstAsync(node => node.Id == appliedCandidateViewModel.DefaultSelectItem);
+            var user = await _db.Users.FirstAsync(node => node.Id == appliedCandidateViewModel.CurrentUser.Id);
             var appliedCanidate = new AppliedCandidates()
             {
-                AppliedCandidateState = (int)AppliedCandidateStateOptions.New,
+                AppliedCandidateState = AppliedCandidateStateOptions.New,
                 Position = position,
                 Resume = resume,
-                User = null
+                User = (ApplicationUser)user
             };
             _db.AppliedCandidates.Add(appliedCanidate);
             await _db.SaveChangesAsync();

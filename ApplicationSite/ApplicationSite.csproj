@@ -210,6 +210,11 @@
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\AppliedCandidate\Create.cshtml" />
+    <Content Include="Views\AppliedCandidate\Delete.cshtml" />
+    <Content Include="Views\AppliedCandidate\Details.cshtml" />
+    <Content Include="Views\AppliedCandidate\Edit.cshtml" />
+    <Content Include="Views\AppliedCandidate\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -264,6 +269,7 @@
     <Compile Include="App_Start\SmsService.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AppliedCandidateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
