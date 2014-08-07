@@ -43,9 +43,9 @@ namespace ApplicationSite.Controllers
         }
 
         // GET: Resumes/Create
-        public ActionResult Create()
+        public PartialViewResult Create()
         {
-            return View();
+            return PartialView("Create", new ResumeViewModel());
         }
 
         // POST: Resumes/Create
@@ -76,6 +76,7 @@ namespace ApplicationSite.Controllers
                 return View(resume);
             }
 
+            // TODO: FileName is getting the full file path on the system, rather than just the file name...
             var newResume = new Resume()
             {
                 Title = resume.Title,
@@ -88,7 +89,6 @@ namespace ApplicationSite.Controllers
             var resumeFilePath = string.Empty;
             if (resumeFile.ContentLength > 0)
             {
-                // TODO: Is using the ID dangerous?
                 var path = Path.GetRandomFileName();
                 var cloudStorage = new CloudStorage("resume", false);
                 cloudStorage.UploadFile(resumeFile, path);
@@ -97,7 +97,8 @@ namespace ApplicationSite.Controllers
             newResume.Path = resumeFilePath;
             _db.Resumes.Add(newResume);
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            // TODO: Instead of a redirect, return what actually changed and update the caller.
+            return RedirectToAction("ManageCandidate", "Manage");
         }
 
         private ApplicationUserManager _userManager;
