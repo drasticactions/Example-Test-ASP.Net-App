@@ -6,35 +6,45 @@
 
 <h2>@Model.Position.Title</h2>
 
-@using (Html.BeginForm()) 
+@if (Model.ResumeSelectList.Any())
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        @Html.HiddenFor(model => model.Position.Id)
-        @Html.HiddenFor(model => model.Position.Title)
-        @Html.HiddenFor(model => model.Position.Description)
-        @Html.HiddenFor(model => model.ResumeSelectList)
-        @Html.HiddenFor(model => model.CurrentUser.Id)
-        <h4>AppliedCandidates</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.ResumeSelectList, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.DefaultSelectItem, Model.ResumeSelectList, htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.ValidationMessageFor(model => model.ResumeSelectList, "", new { @class = "text-danger" })
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.HiddenFor(model => model.Position.Id)
+            @Html.HiddenFor(model => model.Position.Title)
+            @Html.HiddenFor(model => model.Position.Description)
+            @Html.HiddenFor(model => model.ResumeSelectList)
+            @Html.HiddenFor(model => model.CurrentUser.Id)
+            <hr />
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.ResumeSelectList, htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.DefaultSelectItem, Model.ResumeSelectList, htmlAttributes: new {@class = "control-label col-md-2"})
+                    @Html.ValidationMessageFor(model => model.ResumeSelectList, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    }
+}
+else
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>You do not have any resumes on file. You must add one before you can apply!</h4>
+            <h3>@Html.ActionLink("Click here to add one.", "ManageCandidate", "Manage")</h3>
         </div>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Open Positions List", "Index", "PositionsList")
 </div>
