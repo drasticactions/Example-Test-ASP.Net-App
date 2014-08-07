@@ -1,7 +1,19 @@
-﻿
+﻿@model ApplicationSite.ViewModels.ManageCandidateViewModel
 @{
     ViewBag.Title = "ManageCandidate";
 }
 
 <h2>ManageCandidate</h2>
-
+@if (Model.AppliedForPositions.Any())
+{
+    <h2>Applied Positions</h2>
+    <div class="list-group">
+        @foreach (var item in Model.AppliedForPositions)
+        {
+            <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">@item.Position.Title</h4>
+                <p class="list-group-item-text">@item.Position.Description</p>
+            </a>
+        }
+    </div>
+}

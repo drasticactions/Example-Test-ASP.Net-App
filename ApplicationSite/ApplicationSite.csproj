@@ -288,6 +288,7 @@
     <Compile Include="ViewModels\AppliedCandidateViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginListViewModel.cs" />
+    <Compile Include="ViewModels\ManageCandidateViewModel.cs" />
     <Compile Include="ViewModels\PositionsViewModel.cs" />
     <Compile Include="ViewModels\ResumeViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
