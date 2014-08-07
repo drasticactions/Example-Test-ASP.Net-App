@@ -20,5 +20,13 @@ namespace ApplicationSite.ViewModels
         public Positions Position { get; set; }
 
         public ApplicationUser CurrentUser { get; set; }
+
+        public void MapTo(SelectList resumeSelectList, Positions postion, ApplicationUser user)
+        {
+            this.DefaultSelectItem = 0;
+            this.Position = postion;
+            this.ResumeSelectList = resumeSelectList;
+            this.CurrentUser = user;
+        }
     }
 }

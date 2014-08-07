@@ -167,21 +167,21 @@ namespace ApplicationSite.Controllers
         [HttpGet]
         public async Task<ActionResult> Apply(int id)
         {
-            // TODO: Move model mapping to an actual model mapper.
-            // This is to test and make sure everything works.
+            // If user enters apply URL directly, do server side validation to see if they have already applied.
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var appliedCanidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
+            if (appliedCanidate != null)
+            {
+                // TODO: Instead of just sending to index, send to error page saying they have already applied.
+                return RedirectToAction("Index");
+            }
 
             var position = await _db.Positions.FindAsync(id);
             var resumes = await _db.Resumes.ToListAsync();
-            var user = UserManager.FindById(User.Identity.GetUserId());
             var list = resumes.Where(resume => resume.User.Id == user.Id).Select(resume => new SelectListItem {Value = resume.Id.ToString(CultureInfo.InvariantCulture), Text = resume.Title}).ToList();
             var selectList = new SelectList(list, "Value", "Text", 0);
-            var appliedCandidateViewModel = new AppliedCandidateViewModel()
-            {
-                DefaultSelectItem = 0,
-                Position = position,
-                ResumeSelectList = selectList,
-                CurrentUser = user
-            };
+            var appliedCandidateViewModel = new AppliedCandidateViewModel();
+            appliedCandidateViewModel.MapTo(selectList, position, user);
             return View(appliedCandidateViewModel);
         }
 
@@ -194,12 +194,20 @@ namespace ApplicationSite.Controllers
             {
                 return View(appliedCandidateViewModel);
             }
-            // TODO: These are hard coded and are not using the view models
-            // Instead we are just pulling the first value from the database.
-            // This is only for testing, it needs to be updated.
-            var position = await _db.Positions.FirstAsync(node => node.Id == appliedCandidateViewModel.Position.Id);
-            var resume = await _db.Resumes.FirstAsync(node => node.Id == appliedCandidateViewModel.DefaultSelectItem);
             var user = await _db.Users.FirstAsync(node => node.Id == appliedCandidateViewModel.CurrentUser.Id);
+            var position = await _db.Positions.FirstAsync(node => node.Id == appliedCandidateViewModel.Position.Id);
+
+            var appliedCanidateCheck = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == position.Id);
+            if (appliedCanidateCheck != null)
+            {
+                // Doing another check if the user has already applyed for a position.
+                // The chance is slim that they would end up here
+                // (For example, they could have had two sessions open with the same apply button active, and then clicked on both), 
+                // but the call is cheap, so it's worth doing just in case.
+                return RedirectToAction("Index");
+            }
+
+            var resume = await _db.Resumes.FirstAsync(node => node.Id == appliedCandidateViewModel.DefaultSelectItem);
             var appliedCanidate = new AppliedCandidates()
             {
                 AppliedCandidateState = AppliedCandidateStateOptions.New,
