@@ -11,14 +11,15 @@ using ApplicationSite.Models;
 
 namespace ApplicationSite.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class AppliedCandidateController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
 
         // GET: AppliedCandidate
         public async Task<ActionResult> Index()
         {
-            return View(await db.AppliedCandidates.ToListAsync());
+            return View(await _db.AppliedCandidates.ToListAsync());
         }
 
         // GET: AppliedCandidate/Details/5
@@ -28,7 +29,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AppliedCandidates appliedCandidates = await db.AppliedCandidates.FindAsync(id);
+            AppliedCandidates appliedCandidates = await _db.AppliedCandidates.FindAsync(id);
             if (appliedCandidates == null)
             {
                 return HttpNotFound();
@@ -51,8 +52,8 @@ namespace ApplicationSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.AppliedCandidates.Add(appliedCandidates);
-                await db.SaveChangesAsync();
+                _db.AppliedCandidates.Add(appliedCandidates);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +67,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AppliedCandidates appliedCandidates = await db.AppliedCandidates.FindAsync(id);
+            AppliedCandidates appliedCandidates = await _db.AppliedCandidates.FindAsync(id);
             if (appliedCandidates == null)
             {
                 return HttpNotFound();
@@ -83,8 +84,8 @@ namespace ApplicationSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(appliedCandidates).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _db.Entry(appliedCandidates).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(appliedCandidates);
@@ -97,7 +98,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AppliedCandidates appliedCandidates = await db.AppliedCandidates.FindAsync(id);
+            AppliedCandidates appliedCandidates = await _db.AppliedCandidates.FindAsync(id);
             if (appliedCandidates == null)
             {
                 return HttpNotFound();
@@ -110,9 +111,9 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            AppliedCandidates appliedCandidates = await db.AppliedCandidates.FindAsync(id);
-            db.AppliedCandidates.Remove(appliedCandidates);
-            await db.SaveChangesAsync();
+            AppliedCandidates appliedCandidates = await _db.AppliedCandidates.FindAsync(id);
+            _db.AppliedCandidates.Remove(appliedCandidates);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +121,7 @@ namespace ApplicationSite.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

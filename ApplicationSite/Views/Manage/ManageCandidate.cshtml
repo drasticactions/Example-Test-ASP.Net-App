@@ -3,23 +3,101 @@
     ViewBag.Title = "ManageCandidate";
 }
 
-<h2>ManageCandidate</h2>
-@if (Model.AppliedForPositions.Any())
-{
-    <h2>Applied Positions</h2>
-    <div class="list-group">
-        @foreach (var item in Model.AppliedForPositions)
-        {
-            <a href="#" class="list-group-item">
-                <h4 class="list-group-item-heading">@item.Position.Title</h4>
-                <p class="list-group-item-text">@item.Position.Description</p>
-            </a>
-        }
-    </div>
-}
-
-<div>
-    @{
-        Html.RenderAction("Create", "Resumes");
+<h2>Manage Candidate</h2>
+<div class="row">
+    @if (Model.AppliedForPositions.Any())
+    {
+        <h2>Applied Positions</h2>
+        <div class="list-group">
+            @foreach (var item in Model.AppliedForPositions)
+            {
+                <a href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">@item.Position.Title</h4>
+                    <p class="list-group-item-text">@item.Position.Description</p>
+                </a>
+            }
+        </div>
     }
+</div>
+<div class="row">
+    @if (Model.Resumes.Any())
+    {
+        <div class="col-lg-4">
+            <h3>Unused Resumes</h3>
+            @if (Model.Resumes.Any(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
+            {
+                <div class="list-group">
+                    @foreach (var item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
+                    {
+                        <div class="list-group-item">
+                            <p class="list-group-item-text">@item.Title</p>
+                            <div class="btn-group btn-group-justified">
+                                <button class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Resumes", new {id = item.Id}, null)' " type="button" title="Remove Resume">Remove</button>
+                                <button class="btn btn-default" onclick="location.href = '@Url.Action("Download", "Resumes", new {id = item.Id}, null)' " type="button" title="Download Resume">Download</button>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                     <div>
+                        <h4>You have no unused resume files.</h4>
+                    </div>
+            }
+        </div>
+        <div class="col-lg-4">
+            <h3>Used Resumes</h3>
+            @if (Model.Resumes.Any(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
+            {
+                <div class="list-group">
+                    @foreach (var item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id == node.Id)))
+                    {
+                        <div class="list-group-item">
+                            <p class="list-group-item-text">@item.Title</p>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Applied with</div>
+                                <div class="panel-body">
+                                    <ul class="list-group">
+                                        @foreach (var applyPosition in Model.AppliedForPositions.Where(node => node.Resume.Id == item.Id))
+                                        {
+                                            <li class="list-group-item">@applyPosition.Position.Title</li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="btn-group btn-group-justified">
+                                <button class="btn btn-default disabled" onclick="location.href='@Url.Action("Delete", "Resumes", new { id = item.Id }, null)'" type="button" title="Remove Resume">Remove</button>
+                                <button class="btn btn-default" onclick="location.href='@Url.Action("Download", "Resumes", new { id = item.Id }, null)'" type="button" title="Download Resume">Download</button>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                      <div>
+                        <h4>You have no used resume files.</h4>
+                    </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-4">
+            <div>
+               <h4>You have no resumes uploaded.</h4>
+            </div>
+        </div>
+    }
+    <div class="col-lg-4">
+        <div>
+            @{
+                Html.RenderAction("Create", "Resumes");
+            }
+        </div>
+    </div>
+
 </div>

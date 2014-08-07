@@ -196,11 +196,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resume File (PDF).
+        /// </summary>
+        public static string ResumeFilePdf {
+            get {
+                return ResourceManager.GetString("ResumeFilePdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resume Not Uploaded.
         /// </summary>
         public static string ResumeNotUploaded {
             get {
                 return ResourceManager.GetString("ResumeNotUploaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string ResumeTitle {
+            get {
+                return ResourceManager.GetString("ResumeTitle", resourceCulture);
             }
         }
         

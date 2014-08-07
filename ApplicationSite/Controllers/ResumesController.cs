@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using ApplicationSite.Models;
 using ApplicationSite.Tools;
 using ApplicationSite.ViewModels;
@@ -17,6 +18,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace ApplicationSite.Controllers
 {
+    [Authorize]
     public class ResumesController : Controller
     {
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
@@ -28,6 +30,7 @@ namespace ApplicationSite.Controllers
         }
 
         // GET: Resumes/Details/5
+        
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -76,11 +79,10 @@ namespace ApplicationSite.Controllers
                 return View(resume);
             }
 
-            // TODO: FileName is getting the full file path on the system, rather than just the file name...
             var newResume = new Resume()
             {
                 Title = resume.Title,
-                FileName = resumeFile.FileName,
+                FileName = Path.GetFileName(resumeFile.FileName),
                 User = (ApplicationUser)currentUser
             };
 
@@ -147,6 +149,7 @@ namespace ApplicationSite.Controllers
         }
 
         // GET: Resumes/Delete/5
+        
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,6 +157,16 @@ namespace ApplicationSite.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Resume resume = await _db.Resumes.FindAsync(id);
+
+            // If a user tries to enter a 
+
+            if (User.IsInRole("Candidate"))
+            {
+                if (resume.User.Id != User.Identity.GetUserId())
+                {
+                    return HttpNotFound();
+                }
+            }
             if (resume == null)
             {
                 return HttpNotFound();
@@ -193,12 +206,33 @@ namespace ApplicationSite.Controllers
         public async Task<ActionResult> Download(int id)
         {
             // TODO: Add error handling if we can't find the file.
-
             var resume = await _db.Resumes.FindAsync(id);
-            var cloudStorage = new CloudStorage("resume", false);
-            var blob = cloudStorage.GetBlob(resume.Path);
-            Response.AddHeader("Content-Disposition", "attachment; filename=" + resume.FileName);
-            blob.DownloadToStream(Response.OutputStream);
+            if (resume == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (User.IsInRole("Candidate"))
+            {
+                if (resume.User.Id != User.Identity.GetUserId())
+                {
+                    return HttpNotFound();
+                }
+            }
+
+            try
+            {
+                var cloudStorage = new CloudStorage("resume", false);
+                var blob = cloudStorage.GetBlob(resume.Path);
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + resume.FileName);
+                blob.DownloadToStream(Response.OutputStream);
+            }
+            catch (Exception)
+            {
+                // TODO: Send to error page.
+                return HttpNotFound();
+            }
+          
             return new EmptyResult();
         }
 

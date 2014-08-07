@@ -9,13 +9,12 @@ namespace ApplicationSite.ViewModels
 {
     public class ResumeViewModel
     {
-        public int Id { get; set; }
-
         [Required(AllowEmptyStrings = false)]
+        [Display(ResourceType = typeof (Resources.Resources), Name = "ResumeTitle")]
         public string Title { get; set; }
 
-        // TODO: Remove from view model, it should be posted in the create form.
         [DataType(DataType.Upload)]
+        [Display(ResourceType = typeof (Resources.Resources), Name = "ResumeFilePdf")]
         public HttpPostedFileBase ResumeFile { get; set; }
     }
 }

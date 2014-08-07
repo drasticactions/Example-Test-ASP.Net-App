@@ -209,8 +209,6 @@ namespace ApplicationSite.Controllers
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
@@ -251,17 +249,15 @@ namespace ApplicationSite.Controllers
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
+                    var roleResult = await UserManager.AddToRolesAsync(user.Id, new[] { "Candidate" });
+                    if (roleResult.Succeeded)
                     {
-                        // Add Candidate role to user. Users created in this view can only be "Candidates".
-                        var roleResult = await UserManager.AddToRolesAsync(user.Id, new[] { "Candidate" });
-                        if (roleResult.Succeeded)
+                        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                        if (result.Succeeded)
                         {
                             await SignInAsync(user, isPersistent: false);
                             return RedirectToAction("Index", "Home");
                         }
-                        AddErrors(roleResult);
                     }
                 }
                 AddErrors(result);
