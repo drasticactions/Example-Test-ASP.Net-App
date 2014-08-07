@@ -3,18 +3,5 @@
     ViewBag.Title = "Index";
 }
 
-@if (Request.IsAuthenticated && User.IsInRole("Admin"))
-{
-    @Html.Partial("_AdminPartial")
-}
-else if (Request.IsAuthenticated && User.IsInRole("Employee"))
-{
-    @Html.Partial("_EmployeePartial")
-}
-else if (Request.IsAuthenticated && User.IsInRole("Candidate"))
-{
-    @Html.Partial("_UserPartial")
-}
-
 
 

@@ -192,9 +192,6 @@
     <Content Include="Images\NinjaKun2.png" />
     <Content Include="packages.config" />
     <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\_UserPartial.cshtml" />
-    <Content Include="Views\Manage\_EmployeePartial.cshtml" />
-    <Content Include="Views\Manage\_AdminPartial.cshtml" />
     <Content Include="Views\Positions\Create.cshtml" />
     <Content Include="Views\Positions\Delete.cshtml" />
     <Content Include="Views\Positions\Details.cshtml" />
@@ -218,6 +215,8 @@
     <Content Include="Views\RolesAdmin\Delete.cshtml" />
     <Content Include="Views\RolesAdmin\Details.cshtml" />
     <Content Include="Views\RolesAdmin\Index.cshtml" />
+    <Content Include="Views\Manage\ManageCandidate.cshtml" />
+    <Content Include="Views\Manage\ManageEmployee.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
