@@ -225,6 +225,8 @@
     <Content Include="Views\PositionsList\Index.cshtml" />
     <Content Include="Views\PositionsList\Details.cshtml" />
     <Content Include="Views\Positions\Withdraw.cshtml" />
+    <Content Include="Views\Positions\ApplySuccess.cshtml" />
+    <Content Include="Views\Positions\WithdrawSuccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

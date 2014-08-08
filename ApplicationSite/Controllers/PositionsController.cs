@@ -37,6 +37,12 @@ namespace ApplicationSite.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin, Employee, Candidate")]
+        public ActionResult ApplySuccess()
+        {
+            return View();
+        }
 
         // GET: Positions
         [Authorize(Roles = "Admin, Employee")]
@@ -217,7 +223,7 @@ namespace ApplicationSite.Controllers
             };
             _db.AppliedCandidates.Add(appliedCanidate);
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index", "PositionsList");
+            return RedirectToAction("ApplySuccess", "Positions");
         }
 
         protected override void Dispose(bool disposing)
@@ -269,7 +275,14 @@ namespace ApplicationSite.Controllers
                 // TODO: Send user to error page, telling them their application was not withdrawn.
                 return RedirectToAction("Index", "PositionsList");
             }
-            return RedirectToAction("Index", "PositionsList");
+            return RedirectToAction("WithdrawSuccess", "Positions");
         }
+        [HttpGet]
+        [Authorize(Roles = "Admin, Employee, Candidate")]
+        public ActionResult WithdrawSuccess()
+        {
+            return View();
+        }
+
     }
 }
