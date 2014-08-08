@@ -288,6 +288,11 @@
     <Compile Include="Controllers\ResumesController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UsersAdminController.cs" />
+    <Compile Include="Migrations\201408080136494_InitialCreate.cs" />
+    <Compile Include="Migrations\201408080136494_InitialCreate.Designer.cs">
+      <DependentUpon>201408080136494_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppliedCandidates.cs" />
     <Compile Include="Models\Positions.cs" />
     <Compile Include="Models\Resume.cs" />
@@ -321,7 +326,11 @@
       <Name>Resources</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201408080136494_InitialCreate.resx">
+      <DependentUpon>201408080136494_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

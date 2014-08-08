@@ -9,9 +9,9 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace ApplicationSite
 {
-    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext> 
+    public class ApplicationDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext> 
     {
-        protected override void Seed(ApplicationDbContext context) {
+        protected  override void Seed(ApplicationDbContext context) {
             InitializeIdentityForEf(context);
             base.Seed(context);
         }
@@ -56,6 +56,41 @@ namespace ApplicationSite
             {
                 role = new IdentityRole(roleName);
                 roleManager.Create(role);
+            }
+
+            for (var index = 0; index <= 3; index++)
+            {
+                var testUser = new ApplicationUser
+                {
+                    Email = "testemail@email.com",
+                    UserName = "Test Employee " + index
+                };
+                userManager.Create(testUser, password);
+                userManager.SetLockoutEnabled(testUser.Id, false);
+                var employeeRole = roleManager.FindByName("Employee");
+                userManager.AddToRole(testUser.Id, employeeRole.Id);
+            }
+
+            for (var index = 0; index <= 3; index ++)
+            {
+                var position = new Positions
+                {
+                    Description = "Test Description " + index,
+                    PositionStatus = PositionStatus.Open,
+                    Title = "Test Title " + index
+                };
+                db.Positions.Add(position);
+            }
+
+            for (var index = 0; index <= 3; index++)
+            {
+                var position = new Positions
+                {
+                    Description = "Test Closed Description " + index,
+                    PositionStatus = PositionStatus.Closed,
+                    Title = "Test Closed Title " + index
+                };
+                db.Positions.Add(position);
             }
         }
     }

@@ -8,6 +8,7 @@
 
 @if (Model.ResumeSelectList.Any())
 {
+    <h4>Select the resume you wish to submit. Then click "Apply". That's it! It's that simple!</h4>
     using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -30,7 +31,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="submit" value="Apply" class="btn btn-default" />
                 </div>
             </div>
         </div>
@@ -46,5 +47,5 @@ else
     </div>
 }
 <div>
-    @Html.ActionLink("Back to Open Positions List", "Index", "PositionsList")
+    @Html.ActionLink("Return to Previous Page", "Details", "PositionsList", new { id = Model.Position.Id })
 </div>

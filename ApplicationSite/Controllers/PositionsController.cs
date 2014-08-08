@@ -39,14 +39,13 @@ namespace ApplicationSite.Controllers
 
 
         // GET: Positions
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> Index()
         {
             return View(await _db.Positions.ToListAsync());
         }
 
-        // GET: Positions/Details/5
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> Details(int id)
         {
             if (id < 0)
@@ -174,7 +173,7 @@ namespace ApplicationSite.Controllers
             if (appliedCanidate != null)
             {
                 // TODO: Instead of just sending to index, send to error page saying they have already applied.
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "PositionsList");
             }
 
             var position = await _db.Positions.FindAsync(id);
@@ -205,7 +204,7 @@ namespace ApplicationSite.Controllers
                 // The chance is slim that they would end up here
                 // (For example, they could have had two sessions open with the same apply button active, and then clicked on both), 
                 // but the call is cheap, so it's worth doing just in case.
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "PositionsList");
             }
 
             var resume = await _db.Resumes.FirstAsync(node => node.Id == appliedCandidateViewModel.DefaultSelectItem);
@@ -218,7 +217,7 @@ namespace ApplicationSite.Controllers
             };
             _db.AppliedCandidates.Add(appliedCanidate);
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "PositionsList");
         }
 
         protected override void Dispose(bool disposing)

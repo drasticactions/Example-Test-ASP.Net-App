@@ -14,11 +14,8 @@
                 {
                     <div class="list-group-item">
                         <p class="list-group-item-text">@item.Title</p>
-                        <div class="btn-group btn-group-justified">
                             <button class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Resumes", new {id = item.Id}, null)' " type="button" title="Remove Resume">Remove</button>
                             <button class="btn btn-default" onclick="location.href = '@Url.Action("Download", "Resumes", new {id = item.Id}, null)' " type="button" title="Download Resume">Download</button>
-                        </div>
-
                     </div>
                 }
             </div>
@@ -32,7 +29,7 @@
     </div>
     <div class="col-lg-4">
         <h3>Used Resumes</h3>
-        @if (Model.Resumes.Any(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
+        @if (!Model.Resumes.Any(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
         {
             <div class="list-group">
                 @foreach (var item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id == node.Id)))
@@ -50,11 +47,8 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="btn-group btn-group-justified">
                             <button class="btn btn-default disabled" onclick="location.href='@Url.Action("Delete", "Resumes", new { id = item.Id }, null)'" type="button" title="Remove Resume">Remove</button>
                             <button class="btn btn-default" onclick="location.href='@Url.Action("Download", "Resumes", new { id = item.Id }, null)'" type="button" title="Download Resume">Download</button>
-                        </div>
-
                     </div>
                 }
             </div>
@@ -92,7 +86,7 @@
         else
         {
             <h2>You have yet to apply for a position!</h2>
-            <h2>@Html.ActionLink("Click here to check new and open positions.", "Index", "Positions")</h2>
+            <h2>@Html.ActionLink("Click here to check new and open positions.", "Index", "PositionsList")</h2>
         }
     </div>
 </div>

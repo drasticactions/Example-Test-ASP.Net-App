@@ -192,3 +192,5 @@ C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Appli
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\ru\System.Spatial.resources.dll
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\zh-Hans\System.Spatial.resources.dll
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\zh-Hant\System.Spatial.resources.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Debug\ApplicationSite.Migrations.InitialCreate.resources
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Debug\ApplicationSite.csproj.GenerateResource.Cache

@@ -13,7 +13,7 @@ namespace ApplicationSite.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201408050450255_InitialCreate"; }
+            get { return "201408080136494_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

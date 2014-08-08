@@ -186,7 +186,7 @@ namespace ApplicationSite.Controllers
                 _db.Resumes.Remove(resume);
                 await _db.SaveChangesAsync();
                 cloudStorage.DeleteFile(resume.Path);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             catch (DbUpdateException)
             {
