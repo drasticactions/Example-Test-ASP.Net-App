@@ -1,0 +1,20 @@
+﻿@model ApplicationSite.Models.AppliedCandidates
+@{
+    ViewBag.Title = "Withdraw";
+}
+
+<h2>Withdraw</h2>
+
+<h3>Are you sure you want to withdraw your application from "@Model.Position.Title" position?</h3>
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Withdraw" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index", "PositionsList")
+        </div>
+    }
+</div>

@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using ApplicationSite.Models;
 using ApplicationSite.ViewModels;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -227,6 +228,49 @@ namespace ApplicationSite.Controllers
                 _db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, Employee, Candidate")]
+        public async Task<ActionResult> Withdraw(int id)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
+            if (appliedCandidate == null)
+            {
+                // The user does not have a position request on file,
+                // So we need to kick them out of here, since there is nothing to remove.
+                // TODO: Send the user to an error page explaining what happened.
+                return RedirectToAction("Index", "PositionsList");
+            }
+            return View(appliedCandidate);
+        }
+
+        [HttpPost, ActionName("Withdraw")]
+        [Authorize(Roles = "Admin, Employee, Candidate")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> WithdrawConfirmed(int id)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
+            if (appliedCandidate == null)
+            {
+                // The user does not have a position request on file,
+                // So we need to kick them out of here, since there is nothing to remove.
+                // TODO: Send the user to an error page explaining what happened.
+                return RedirectToAction("Index", "PositionsList");
+            }
+            try
+            {
+                _db.AppliedCandidates.Remove(appliedCandidate);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                // TODO: Send user to error page, telling them their application was not withdrawn.
+                return RedirectToAction("Index", "PositionsList");
+            }
+            return RedirectToAction("Index", "PositionsList");
         }
     }
 }
