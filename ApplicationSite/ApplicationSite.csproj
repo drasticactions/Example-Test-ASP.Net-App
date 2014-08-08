@@ -192,6 +192,7 @@
     <Content Include="Images\NinjaKun.png" />
     <Content Include="Images\NinjaKun2.png" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\Site.js" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Positions\Create.cshtml" />
     <Content Include="Views\Positions\Delete.cshtml" />

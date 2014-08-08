@@ -9,12 +9,22 @@
         <p>@Model.Position.Description</p>
         @if (!Model.HasAlreadyApplied)
         {
-            <button class="btn btn-default" onclick="location.href = '@Url.Action("Apply", "Positions", new { id = Model.Position.Id }, null)' " type="button" title="Apply">Apply</button>
+            <button id="resumeButton" onclick="setupSiteModal('#resumeContainer', '#resumeModal');" class="btn btn-default" type="button" title="Apply">Apply</button>
         }
         else
         {
-            <button class="btn btn-default" onclick="location.href = '@Url.Action("Withdraw", "Positions", new { id = Model.Position.Id }, null)' " type="button" title="Withdraw">Withdraw</button>
+            <button id="withdrawButton" class="btn btn-default" onclick="setupSiteModal('#withdrawContainer', '#withdrawModal');"  type="button" title="Withdraw">Withdraw</button>
         }
+    </div>
+</div>
+
+<div id='withdrawModal' class='modal fade in' data-url='@Url.Action("Withdraw", "Positions", new { id = Model.Position.Id }, null)'>
+    <div id='withdrawContainer'>
+    </div>
+</div>
+
+<div id='resumeModal' class='modal fade in' data-url='@Url.Action("Apply", "Positions", new { id = Model.Position.Id }, null)'>
+    <div id='resumeContainer'>
     </div>
 </div>
 

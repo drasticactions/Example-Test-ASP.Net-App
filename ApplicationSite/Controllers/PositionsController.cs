@@ -182,7 +182,7 @@ namespace ApplicationSite.Controllers
             var selectList = new SelectList(list, "Value", "Text", 0);
             var appliedCandidateViewModel = new AppliedCandidateViewModel();
             appliedCandidateViewModel.MapTo(selectList, position, user);
-            return View(appliedCandidateViewModel);
+            return PartialView(appliedCandidateViewModel);
         }
 
         [HttpPost]

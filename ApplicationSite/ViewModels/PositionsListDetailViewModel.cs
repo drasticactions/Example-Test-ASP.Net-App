@@ -12,10 +12,13 @@ namespace ApplicationSite.ViewModels
 
         public bool HasAlreadyApplied { get; set; }
 
-        public void MapTo(Positions position, bool hasApplied)
+        public bool IsLoggedIn { get; set; }
+
+        public void MapTo(Positions position, bool hasApplied, bool isLoggedIn)
         {
             this.Position = position;
             this.HasAlreadyApplied = hasApplied;
+            this.IsLoggedIn = isLoggedIn;
         }
     }
 }

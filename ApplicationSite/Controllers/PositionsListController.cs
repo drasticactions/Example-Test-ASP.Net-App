@@ -54,10 +54,19 @@ namespace ApplicationSite.Controllers
                 return RedirectToAction("Index");
             }
             var user = UserManager.FindById(User.Identity.GetUserId());
-            var appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == position.Id);
+            AppliedCandidates appliedCandidate = null;
+            bool isLoggedIn = true;
+            if (user != null)
+            {
+                appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == position.Id);
+            }
+            else
+            {
+                isLoggedIn = false;
+            }
             var positionsDetailViewModel = new PositionsListDetailViewModel();
             bool hasApplied = appliedCandidate != null;
-            positionsDetailViewModel.MapTo(position, hasApplied);
+            positionsDetailViewModel.MapTo(position, hasApplied, isLoggedIn);
             return View(positionsDetailViewModel);
         }
     }

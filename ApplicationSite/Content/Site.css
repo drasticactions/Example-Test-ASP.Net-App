@@ -9,6 +9,14 @@
     padding-right: 15px;
 }
 
+body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+    margin-right: 0;
+}
+
+.modal {
+    overflow-y: auto;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
