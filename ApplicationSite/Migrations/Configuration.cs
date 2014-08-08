@@ -78,11 +78,16 @@ namespace ApplicationSite.Migrations
                 manager.AddToRole(test.Id, "Candidate");
             }
 
+            if (context.Positions.Any())
+            {
+                return;
+            }
+
             for (var index = 0; index <= 3; index++)
             {
                 var position = new Positions
                 {
-                    Description = "Test Description " + index,
+                    Description = "###Test Description " + index,
                     PositionStatus = PositionStatus.Open,
                     Title = "Test Title " + index
                 };
@@ -93,7 +98,7 @@ namespace ApplicationSite.Migrations
             {
                 var position = new Positions
                 {
-                    Description = "Test Closed Description " + index,
+                    Description = "###Test Closed Description " + index,
                     PositionStatus = PositionStatus.Closed,
                     Title = "Test Closed Title " + index
                 };

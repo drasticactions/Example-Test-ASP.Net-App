@@ -18,6 +18,8 @@ namespace ApplicationSite.Models
         public virtual Positions Position { get; set; }
 
         public AppliedCandidateStateOptions AppliedCandidateState { get; set; }
+
+        public DateTime AppliedTime { get; set; }
     }
 
     /// <summary>

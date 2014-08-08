@@ -48,6 +48,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="MarkdownDeep">
+      <HintPath>..\packages\MarkdownDeep.NET.1.5\lib\.NetFramework 3.5\MarkdownDeep.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0-alpha1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -181,6 +184,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-markdown.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -188,11 +192,22 @@
     <Content Include="Images\AwfulLogo.png" />
     <Content Include="Images\FoulPlay-Background.jpg" />
     <Content Include="Images\FoulPlayLogo.png" />
+    <Content Include="Images\Logo.png" />
+    <Content Include="Images\Main\Carousel\car1.png" />
+    <Content Include="Images\Main\Carousel\car2.png" />
+    <Content Include="Images\Main\Carousel\car3.png" />
+    <Content Include="Images\Main\Carousel\car4.png" />
+    <Content Include="Images\Main\main1.jpg" />
+    <Content Include="Images\Main\main2.jpg" />
+    <Content Include="Images\Main\main3.jpg" />
     <Content Include="Images\NinjaKun-Background.png" />
     <Content Include="Images\NinjaKun.png" />
     <Content Include="Images\NinjaKun2.png" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\bootstrap-markdown.js" />
+    <Content Include="Scripts\markdown.js" />
     <Content Include="Scripts\Site.js" />
+    <Content Include="Scripts\to-markdown.js" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Positions\Create.cshtml" />
     <Content Include="Views\Positions\Delete.cshtml" />
@@ -295,6 +310,10 @@
     <Compile Include="Migrations\201408080136494_InitialCreate.Designer.cs">
       <DependentUpon>201408080136494_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408081601137_AppliedCandidate1.cs" />
+    <Compile Include="Migrations\201408081601137_AppliedCandidate1.Designer.cs">
+      <DependentUpon>201408081601137_AppliedCandidate1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppliedCandidates.cs" />
     <Compile Include="Models\Positions.cs" />
@@ -307,6 +326,7 @@
     <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
     <Compile Include="ViewModels\ExternalLoginListViewModel.cs" />
     <Compile Include="ViewModels\ManageCandidateViewModel.cs" />
+    <Compile Include="ViewModels\ManageEmployeeViewModel.cs" />
     <Compile Include="ViewModels\PositionsListDetailViewModel.cs" />
     <Compile Include="ViewModels\PositionsListViewModel.cs" />
     <Compile Include="ViewModels\PositionsViewModel.cs" />
@@ -332,6 +352,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408080136494_InitialCreate.resx">
       <DependentUpon>201408080136494_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408081601137_AppliedCandidate1.resx">
+      <DependentUpon>201408081601137_AppliedCandidate1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

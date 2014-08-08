@@ -194,3 +194,6 @@ C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Appli
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\zh-Hant\System.Spatial.resources.dll
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Debug\ApplicationSite.Migrations.InitialCreate.resources
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Debug\ApplicationSite.csproj.GenerateResource.Cache
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Debug\ApplicationSite.Migrations.AppliedCandidate1.resources
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\MarkdownDeep.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\MarkdownDeep.pdb

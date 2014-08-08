@@ -48,28 +48,7 @@ namespace ApplicationSite.Controllers
         [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> Index()
         {
-            return View(await _db.Positions.ToListAsync());
-        }
-
-        [Authorize(Roles = "Admin, Employee")]
-        public async Task<ActionResult> Details(int id)
-        {
-            if (id < 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Positions positions = await _db.Positions.FindAsync(id);
-            if (positions == null)
-            {
-                return HttpNotFound();
-            }
-            var position = new PositionsViewModel()
-            {
-                Description = positions.Description,
-                Id = positions.Id,
-                Title = positions.Title
-            };
-            return View(position);
+            return RedirectToAction("ManageEmployee", "Manage");
         }
 
         // GET: Positions/Create
@@ -95,7 +74,7 @@ namespace ApplicationSite.Controllers
             position.MapTo(positionVm.Id, positionVm.Title, positionVm.Description, positionVm.PositionStatus);
             _db.Positions.Add(position);
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("ManageEmployee", "Manage");
         }
 
         // GET: Positions/Edit/5
@@ -219,6 +198,7 @@ namespace ApplicationSite.Controllers
                 AppliedCandidateState = AppliedCandidateStateOptions.New,
                 Position = position,
                 Resume = resume,
+                AppliedTime = DateTime.Now,
                 User = (ApplicationUser)user
             };
             _db.AppliedCandidates.Add(appliedCanidate);
@@ -248,7 +228,7 @@ namespace ApplicationSite.Controllers
                 // TODO: Send the user to an error page explaining what happened.
                 return RedirectToAction("Index", "PositionsList");
             }
-            return View(appliedCandidate);
+            return PartialView(appliedCandidate);
         }
 
         [HttpPost, ActionName("Withdraw")]

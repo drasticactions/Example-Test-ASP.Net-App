@@ -20,13 +20,18 @@ namespace ApplicationSite
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-markdown.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
           "~/Scripts/Site.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/markdown").Include(
+                "~/Scripts/markdown.js",
+                "~/Scripts/to-markdown.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-markdown.min.css",
                       "~/Content/site.css"));
         }
     }
