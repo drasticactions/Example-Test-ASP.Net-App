@@ -11,11 +11,6 @@ namespace ApplicationSite.Models
         {
         }
 
-        static ApplicationDbContext()
-        {
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
-        }
-
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

@@ -1,5 +1,6 @@
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using ApplicationSite.Models;
 using Microsoft.AspNet.Identity;
@@ -11,6 +12,7 @@ namespace ApplicationSite
     public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext> 
     {
         protected override void Seed(ApplicationDbContext context) {
+            InitializeIdentityForEf(context);
             base.Seed(context);
         }
 
@@ -43,6 +45,13 @@ namespace ApplicationSite
 
             // Other User Roles
             role = roleManager.FindByName("Employee");
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                roleManager.Create(role);
+            }
+
+            role = roleManager.FindByName("Candidate");
             if (role == null)
             {
                 role = new IdentityRole(roleName);
