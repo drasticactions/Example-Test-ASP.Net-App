@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,25 +17,20 @@ namespace ApplicationSite.Controllers
         private ApplicationUserManager _userManager;
 
         /// <summary>
-        /// Sets up the user manager.
+        ///     Sets up the user manager.
         /// </summary>
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
+
         // GET: PositionsList
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
         {
-            var positions = _db.Positions.Where(node => node.PositionStatus == PositionStatus.Open).ToList();
+            List<Positions> positions = _db.Positions.Where(node => node.PositionStatus == PositionStatus.Open).ToList();
             var positionListVm = new PositionsListViewModel();
             positionListVm.MapTo(positions);
             return View(positionListVm);
@@ -45,7 +39,7 @@ namespace ApplicationSite.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Details(int id)
         {
-            var position = _db.Positions.Find(id);
+            Positions position = _db.Positions.Find(id);
             if (position.PositionStatus != PositionStatus.Open)
             {
                 // If the user saved a link to the position detail page, and it has since been closed
@@ -53,12 +47,15 @@ namespace ApplicationSite.Controllers
                 // TODO: Create new error page telling the user that the position is closed.
                 return RedirectToAction("Index");
             }
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
             AppliedCandidates appliedCandidate = null;
             bool isLoggedIn = true;
             if (user != null)
             {
-                appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == position.Id);
+                appliedCandidate =
+                    await
+                        _db.AppliedCandidates.FirstOrDefaultAsync(
+                            node => node.User.Id == user.Id && node.Position.Id == position.Id);
             }
             else
             {

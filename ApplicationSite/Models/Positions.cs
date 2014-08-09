@@ -17,10 +17,10 @@ namespace ApplicationSite.Models
 
         public void MapTo(int id, string title, string description, PositionStatus positionStatus)
         {
-            this.Id = id;
-            this.Title = title;
-            this.Description = description;
-            this.PositionStatus = positionStatus;
+            Id = id;
+            Title = title;
+            Description = description;
+            PositionStatus = positionStatus;
         }
     }
 

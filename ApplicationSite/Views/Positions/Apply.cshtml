@@ -24,12 +24,12 @@
                         @Html.HiddenFor(model => model.ResumeSelectList)
                         @Html.HiddenFor(model => model.CurrentUser.Id)
                         <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ResumeSelectList, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.ResumeSelectList, new {@class = "control-label col-md-2"})
                             <div class="col-md-10">
-                                @Html.DropDownListFor(model => model.DefaultSelectItem, Model.ResumeSelectList, htmlAttributes: new { @class = "control-label col-md-5" })
-                                @Html.ValidationMessageFor(model => model.ResumeSelectList, "", new { @class = "text-danger" })
+                                @Html.DropDownListFor(model => model.DefaultSelectItem, Model.ResumeSelectList, new {@class = "control-label col-md-5"})
+                                @Html.ValidationMessageFor(model => model.ResumeSelectList, "", new {@class = "text-danger"})
                             </div>
                         </div>
 
@@ -56,4 +56,3 @@
         </div>
     </div>
 </div>
-

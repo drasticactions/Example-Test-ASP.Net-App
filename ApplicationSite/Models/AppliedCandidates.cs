@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace ApplicationSite.Models
 {
@@ -17,17 +14,17 @@ namespace ApplicationSite.Models
 
         public virtual Positions Position { get; set; }
 
+        [Display(ResourceType = typeof (Resources.Resources), Name = "CandidateStatus")]
         public AppliedCandidateStateOptions AppliedCandidateState { get; set; }
 
         public DateTime AppliedTime { get; set; }
     }
 
     /// <summary>
-    /// The state of the application of the candidate.
+    ///     The state of the application of the candidate.
     /// </summary>
     public enum AppliedCandidateStateOptions
     {
-        None,
         New,
         Contact,
         Interview,

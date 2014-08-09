@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using ApplicationSite.Models;
 
@@ -23,10 +18,10 @@ namespace ApplicationSite.ViewModels
 
         public void MapTo(SelectList resumeSelectList, Positions postion, ApplicationUser user)
         {
-            this.DefaultSelectItem = 0;
-            this.Position = postion;
-            this.ResumeSelectList = resumeSelectList;
-            this.CurrentUser = user;
+            DefaultSelectItem = 0;
+            Position = postion;
+            ResumeSelectList = resumeSelectList;
+            CurrentUser = user;
         }
     }
 }

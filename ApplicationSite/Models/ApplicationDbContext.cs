@@ -1,5 +1,4 @@
 using System.Data.Entity;
-using ApplicationSite.ViewModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ApplicationSite.Models
@@ -11,15 +10,15 @@ namespace ApplicationSite.Models
         {
         }
 
+        public DbSet<Positions> Positions { get; set; }
+
+        public DbSet<Resume> Resumes { get; set; }
+
+        public DbSet<AppliedCandidates> AppliedCandidates { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<Positions> Positions { get; set; }
-
-        public System.Data.Entity.DbSet<ApplicationSite.Models.Resume> Resumes { get; set; }
-
-        public System.Data.Entity.DbSet<ApplicationSite.Models.AppliedCandidates> AppliedCandidates { get; set; }
     }
 }

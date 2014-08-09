@@ -1,17 +1,12 @@
-using System.Web;
+using System.Data.Entity.Migrations;
+using System.Linq;
 using ApplicationSite.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace ApplicationSite.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationSite.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
@@ -19,13 +14,13 @@ namespace ApplicationSite.Migrations
             ContextKey = "ApplicationSite.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(ApplicationSite.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             if (!context.Roles.Any(r => r.Name == "Admin"))
             {
                 var store = new RoleStore<IdentityRole>(context);
                 var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "Admin" };
+                var role = new IdentityRole {Name = "Admin"};
 
                 manager.Create(role);
             }
@@ -34,7 +29,7 @@ namespace ApplicationSite.Migrations
             {
                 var store = new RoleStore<IdentityRole>(context);
                 var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "Employee" };
+                var role = new IdentityRole {Name = "Employee"};
 
                 manager.Create(role);
             }
@@ -43,7 +38,7 @@ namespace ApplicationSite.Migrations
             {
                 var store = new RoleStore<IdentityRole>(context);
                 var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "Candidate" };
+                var role = new IdentityRole {Name = "Candidate"};
 
                 manager.Create(role);
             }
@@ -52,7 +47,7 @@ namespace ApplicationSite.Migrations
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var test = new ApplicationUser { UserName = "Admin", Email = "Admin@ThisSite.com"};
+                var test = new ApplicationUser {UserName = "Admin", Email = "Admin@ThisSite.com"};
 
                 manager.Create(test, "123456");
                 manager.AddToRole(test.Id, "Admin");
@@ -62,7 +57,7 @@ namespace ApplicationSite.Migrations
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var test = new ApplicationUser { UserName = "TestEmployee", Email = "TestEmployee@ThisSite.com" };
+                var test = new ApplicationUser {UserName = "TestEmployee", Email = "TestEmployee@ThisSite.com"};
 
                 manager.Create(test, "123456");
                 manager.AddToRole(test.Id, "Employee");
@@ -72,7 +67,7 @@ namespace ApplicationSite.Migrations
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var test = new ApplicationUser { UserName = "TestUser", Email = "TestUser@ThatSite.com" };
+                var test = new ApplicationUser {UserName = "TestUser", Email = "TestUser@ThatSite.com"};
 
                 manager.Create(test, "123456");
                 manager.AddToRole(test.Id, "Candidate");
@@ -83,7 +78,7 @@ namespace ApplicationSite.Migrations
                 return;
             }
 
-            for (var index = 0; index <= 3; index++)
+            for (int index = 0; index <= 3; index++)
             {
                 var position = new Positions
                 {
@@ -94,7 +89,7 @@ namespace ApplicationSite.Migrations
                 context.Positions.Add(position);
             }
 
-            for (var index = 0; index <= 3; index++)
+            for (int index = 0; index <= 3; index++)
             {
                 var position = new Positions
                 {

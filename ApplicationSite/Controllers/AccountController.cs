@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ApplicationSite.Models;
@@ -11,7 +10,7 @@ using Microsoft.Owin.Security;
 namespace ApplicationSite.Controllers
 {
     /// <summary>
-    /// The action controller is used to handle our login and register functions.
+    ///     The action controller is used to handle our login and register functions.
     /// </summary>
     [Authorize]
     public class AccountController : Controller
@@ -23,29 +22,32 @@ namespace ApplicationSite.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
         /// <summary>
-        /// Sets up the user manager.
+        ///     Sets up the user manager.
         /// </summary>
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         /// <summary>
-        /// Get the login view.
+        ///     Sets up the sign in manager.
+        /// </summary>
+        public ApplicationSignInManager SignInManager
+        {
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
+        }
+
+        /// <summary>
+        ///     Get the login view.
         /// </summary>
         /// <param name="returnUrl">The return url, to be used if we log in successfully.</param>
         /// <returns>An action result.</returns>
@@ -57,20 +59,8 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Sets up the sign in manager.
-        /// </summary>
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set { _signInManager = value; }
-        }
-
-        /// <summary>
-        /// Validates the login information sent by the user. If successful, the user logs in. Else we throw
-        /// them back and ask them to try again.
+        ///     Validates the login information sent by the user. If successful, the user logs in. Else we throw
+        ///     them back and ask them to try again.
         /// </summary>
         /// <param name="model">The login view model.</param>
         /// <param name="returnUrl">The return url.</param>
@@ -90,7 +80,8 @@ namespace ApplicationSite.Controllers
             // To enable password failures to trigger lockout, change to shouldLockout: true
 
             // TODO: Should we lockout users who try and log in too much?
-            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
+            SignInStatus result =
+                await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -105,7 +96,7 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Gets the Register view.
+        ///     Gets the Register view.
         /// </summary>
         /// <returns>An action result.</returns>
         [AllowAnonymous]
@@ -115,8 +106,8 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Gets the information the new user provided and attempts to add them to our database,
-        /// if successful, they get added. Else they get thrown back to the register screen.
+        ///     Gets the information the new user provided and attempts to add them to our database,
+        ///     if successful, they get added. Else they get thrown back to the register screen.
         /// </summary>
         /// <param name="model">The register view model.</param>
         /// <returns>A Async action result.</returns>
@@ -132,30 +123,30 @@ namespace ApplicationSite.Controllers
             }
             var user = new ApplicationUser
             {
-                UserName = model.Username, 
+                UserName = model.Username,
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName
             };
 
-            var result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                 // Add Candidate role to user. Users created in this view can only be "Candidates".
-                 var roleResult = await UserManager.AddToRolesAsync(user.Id, new[] { "Candidate" });
-                 if (roleResult.Succeeded)
+                // Add Candidate role to user. Users created in this view can only be "Candidates".
+                IdentityResult roleResult = await UserManager.AddToRolesAsync(user.Id, new[] {"Candidate"});
+                if (roleResult.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
+                    await SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
-                 AddErrors(roleResult);
+                AddErrors(roleResult);
             }
             AddErrors(result);
             return View(model);
         }
 
         /// <summary>
-        /// Logs the user off.
+        ///     Logs the user off.
         /// </summary>
         /// <returns>An action result.</returns>
         [HttpPost]
@@ -167,16 +158,19 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Logs the user in asynchronously.
+        ///     Logs the user in asynchronously.
         /// </summary>
         /// <param name="user">The application user.</param>
-        /// <param name="isPersistent">If the user selected "remember password"
-        /// and wants their login state to be persistent.</param>
+        /// <param name="isPersistent">
+        ///     If the user selected "remember password"
+        ///     and wants their login state to be persistent.
+        /// </param>
         /// <returns>A Async task.</returns>
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, await user.GenerateUserIdentityAsync(UserManager));
+            AuthenticationManager.SignIn(new AuthenticationProperties {IsPersistent = isPersistent},
+                await user.GenerateUserIdentityAsync(UserManager));
         }
 
         //
@@ -187,7 +181,8 @@ namespace ApplicationSite.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
         }
 
         //
@@ -195,14 +190,14 @@ namespace ApplicationSite.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ExternalLoginInfo loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            SignInStatus result = await SignInManager.ExternalSignInAsync(loginInfo, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -214,7 +209,12 @@ namespace ApplicationSite.Controllers
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email, Username = loginInfo.DefaultUserName});
+                    return View("ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel
+                        {
+                            Email = loginInfo.Email,
+                            Username = loginInfo.DefaultUserName
+                        });
             }
         }
 
@@ -223,7 +223,8 @@ namespace ApplicationSite.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
             // TODO: Refactor all register code to go through one function.
             if (User.Identity.IsAuthenticated)
@@ -234,7 +235,7 @@ namespace ApplicationSite.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                ExternalLoginInfo info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
@@ -246,16 +247,16 @@ namespace ApplicationSite.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName
                 };
-                var result = await UserManager.CreateAsync(user);
+                IdentityResult result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    var roleResult = await UserManager.AddToRolesAsync(user.Id, new[] { "Candidate" });
+                    IdentityResult roleResult = await UserManager.AddToRolesAsync(user.Id, new[] {"Candidate"});
                     if (roleResult.Succeeded)
                     {
                         result = await UserManager.AddLoginAsync(user.Id, info.Login);
                         if (result.Succeeded)
                         {
-                            await SignInAsync(user, isPersistent: false);
+                            await SignInAsync(user, false);
                             return RedirectToAction("Index", "Home");
                         }
                     }
@@ -268,20 +269,18 @@ namespace ApplicationSite.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
 
         private void AddErrors(IdentityResult result)
         {
-            foreach (var error in result.Errors)
+            foreach (string error in result.Errors)
             {
                 ModelState.AddModelError("", error);
             }
@@ -316,7 +315,7 @@ namespace ApplicationSite.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
@@ -324,6 +323,7 @@ namespace ApplicationSite.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }

@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using ApplicationSite.Models;
 using ApplicationSite.Tools;
 using ApplicationSite.ViewModels;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace ApplicationSite.Controllers
 {
@@ -22,15 +20,22 @@ namespace ApplicationSite.Controllers
     public class ResumesController : Controller
     {
         private readonly ApplicationDbContext _db = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
 
-        // GET: Resumes
+        public ApplicationUserManager UserManager
+        {
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
+        }
+
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> Index()
         {
-            return View(await _db.Resumes.ToListAsync());
+            return RedirectToAction("ManageEmployee", "Manage");
         }
 
         // GET: Resumes/Details/5
-        
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,7 +61,8 @@ namespace ApplicationSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Title")] ResumeViewModel resume, HttpPostedFileBase resumeFile)
+        public async Task<ActionResult> Create([Bind(Include = "Title")] ResumeViewModel resume,
+            HttpPostedFileBase resumeFile)
         {
             if (!ModelState.IsValid)
             {
@@ -69,7 +75,7 @@ namespace ApplicationSite.Controllers
                 return View(resume);
             }
 
-            var currentUser = _db.Users.Find(User.Identity.GetUserId());
+            IdentityUser currentUser = _db.Users.Find(User.Identity.GetUserId());
 
             // TODO: Placeholder for more advance check. Not sure if it's needed, but we don't
             // want users uploading things that are not pdfs.
@@ -79,19 +85,19 @@ namespace ApplicationSite.Controllers
                 return View(resume);
             }
 
-            var newResume = new Resume()
+            var newResume = new Resume
             {
                 Title = resume.Title,
                 FileName = Path.GetFileName(resumeFile.FileName),
-                User = (ApplicationUser)currentUser
+                User = (ApplicationUser) currentUser
             };
 
             if (!ModelState.IsValid) return View(resume);
 
-            var resumeFilePath = string.Empty;
+            string resumeFilePath = string.Empty;
             if (resumeFile.ContentLength > 0)
             {
-                var path = Path.GetRandomFileName();
+                string path = Path.GetRandomFileName();
                 var cloudStorage = new CloudStorage("resume", false);
                 cloudStorage.UploadFile(resumeFile, path);
                 resumeFilePath = path;
@@ -103,21 +109,8 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("ManageCandidate", "Manage");
         }
 
-        private ApplicationUserManager _userManager;
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
-
         // GET: Resumes/Edit/5
+        [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -149,7 +142,7 @@ namespace ApplicationSite.Controllers
         }
 
         // GET: Resumes/Delete/5
-        
+
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -206,7 +199,7 @@ namespace ApplicationSite.Controllers
         public async Task<ActionResult> Download(int id)
         {
             // TODO: Add error handling if we can't find the file.
-            var resume = await _db.Resumes.FindAsync(id);
+            Resume resume = await _db.Resumes.FindAsync(id);
             if (resume == null)
             {
                 return HttpNotFound();
@@ -223,7 +216,7 @@ namespace ApplicationSite.Controllers
             try
             {
                 var cloudStorage = new CloudStorage("resume", false);
-                var blob = cloudStorage.GetBlob(resume.Path);
+                CloudBlockBlob blob = cloudStorage.GetBlob(resume.Path);
                 Response.AddHeader("Content-Disposition", "attachment; filename=" + resume.FileName);
                 blob.DownloadToStream(Response.OutputStream);
             }
@@ -232,7 +225,7 @@ namespace ApplicationSite.Controllers
                 // TODO: Send to error page.
                 return HttpNotFound();
             }
-          
+
             return new EmptyResult();
         }
 
@@ -245,5 +238,4 @@ namespace ApplicationSite.Controllers
             base.Dispose(disposing);
         }
     }
-    
 }

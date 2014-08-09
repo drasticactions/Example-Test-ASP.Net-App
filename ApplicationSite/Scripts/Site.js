@@ -1,9 +1,8 @@
 ﻿// TODO: Testing as a global function.
-function setupSiteModal(containerName, modalName)
-{
+function setupSiteModal(containerName, modalName) {
     var url = $(modalName).data('url');
 
-    $.get(url, function (data) {
+    $.get(url, function(data) {
         $(containerName).html(data);
 
         $(modalName).modal('show');

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -6,18 +7,19 @@ using System.Web;
 using System.Web.Mvc;
 using ApplicationSite.Models;
 using ApplicationSite.ViewModels;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace ApplicationSite.Controllers
 {
     /// <summary>
-    /// Used to manage users in the application. Only to be used by admin.
+    ///     Used to manage users in the application. Only to be used by admin.
     /// </summary>
     [Authorize(Roles = "Admin")]
     public class UsersAdminController : Controller
     {
-        private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
+        private ApplicationUserManager _userManager;
 
         public UsersAdminController()
         {
@@ -31,30 +33,18 @@ namespace ApplicationSite.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         public ApplicationRoleManager RoleManager
         {
-            get
-            {
-                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-            }
-            private set
-            {
-                _roleManager = value;
-            }
+            get { return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>(); }
+            private set { _roleManager = value; }
         }
 
         /// <summary>
-        /// Shows the list of users in the database.
+        ///     Shows the list of users in the database.
         /// </summary>
         /// <returns>An action result.</returns>
         public async Task<ActionResult> Index()
@@ -63,7 +53,7 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Shows details of a specific user.
+        ///     Shows details of a specific user.
         /// </summary>
         /// <param name="id">The users id.</param>
         /// <returns>An action result.</returns>
@@ -73,7 +63,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await UserManager.FindByIdAsync(id);
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
 
             ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
 
@@ -81,7 +71,7 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Create a new user.
+        ///     Create a new user.
         /// </summary>
         /// <returns>An action result.</returns>
         public async Task<ActionResult> Create()
@@ -92,9 +82,9 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Create a new user.
-        /// If we succeed, create the user and return to login.
-        /// Else return to the create user view with errors.
+        ///     Create a new user.
+        ///     If we succeed, create the user and return to login.
+        ///     Else return to the create user view with errors.
         /// </summary>
         /// <param name="userViewModel">The user view model.</param>
         /// <param name="selectedRoles">The selected roles of the user.</param>
@@ -111,7 +101,7 @@ namespace ApplicationSite.Controllers
                     FirstName = userViewModel.FirstName,
                     LastName = userViewModel.LastName
                 };
-                var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
+                IdentityResult adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User to the selected Roles 
                 if (adminresult.Succeeded)
@@ -121,7 +111,7 @@ namespace ApplicationSite.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    var result = await UserManager.AddToRolesAsync(user.Id, selectedRoles);
+                    IdentityResult result = await UserManager.AddToRolesAsync(user.Id, selectedRoles);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");
@@ -130,13 +120,9 @@ namespace ApplicationSite.Controllers
                     ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
                     return View();
                 }
-                else
-                {
-                    ModelState.AddModelError("", adminresult.Errors.First());
-                    ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                    return View();
-
-                }
+                ModelState.AddModelError("", adminresult.Errors.First());
+                ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+                return View();
                 return RedirectToAction("Index");
             }
             ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
@@ -144,7 +130,7 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Edit a user.
+        ///     Edit a user.
         /// </summary>
         /// <param name="id">The user id.</param>
         /// <returns>An action result</returns>
@@ -154,13 +140,13 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await UserManager.FindByIdAsync(id);
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
 
-            var userRoles = await UserManager.GetRolesAsync(user.Id);
+            IList<string> userRoles = await UserManager.GetRolesAsync(user.Id);
 
             return View(new EditUserViewModel
             {
@@ -176,20 +162,21 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Edit a user.
-        /// If we succeed, edit the user and return to index,
-        /// else go back to the edit screen with errors.
+        ///     Edit a user.
+        ///     If we succeed, edit the user and return to index,
+        ///     else go back to the edit screen with errors.
         /// </summary>
         /// <param name="editUserViewModel">The edit user view model</param>
         /// <param name="selectedRole">The selected roles of the user.</param>
         /// <returns>An action result</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id")] EditUserViewModel editUserViewModel, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id")] EditUserViewModel editUserViewModel,
+            params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByIdAsync(editUserViewModel.Id);
+                ApplicationUser user = await UserManager.FindByIdAsync(editUserViewModel.Id);
                 if (user == null)
                 {
                     return HttpNotFound();
@@ -198,11 +185,12 @@ namespace ApplicationSite.Controllers
                 user.UserName = editUserViewModel.Email;
                 user.Email = editUserViewModel.Email;
 
-                var userRoles = await UserManager.GetRolesAsync(user.Id);
+                IList<string> userRoles = await UserManager.GetRolesAsync(user.Id);
 
-                selectedRole = selectedRole ?? new string[] { };
+                selectedRole = selectedRole ?? new string[] {};
 
-                var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray());
+                IdentityResult result =
+                    await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray());
 
                 if (!result.Succeeded)
                 {
@@ -223,7 +211,7 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Delete a user.
+        ///     Delete a user.
         /// </summary>
         /// <param name="id">The user id.</param>
         /// <returns>An action result.</returns>
@@ -233,7 +221,7 @@ namespace ApplicationSite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var user = await UserManager.FindByIdAsync(id);
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -242,7 +230,7 @@ namespace ApplicationSite.Controllers
         }
 
         /// <summary>
-        /// Confirm deleting a user.
+        ///     Confirm deleting a user.
         /// </summary>
         /// <param name="id">The user id.</param>
         /// <returns>An action result.</returns>
@@ -261,18 +249,18 @@ namespace ApplicationSite.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var user = await UserManager.FindByIdAsync(id);
+            ApplicationUser user = await UserManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-            var result = await UserManager.DeleteAsync(user);
-           
+            IdentityResult result = await UserManager.DeleteAsync(user);
+
             if (result.Succeeded)
             {
                 return RedirectToAction("Index");
             }
-           
+
             ModelState.AddModelError("", result.Errors.First());
             return View();
         }

@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ApplicationSite.Models;
 using ApplicationSite.ViewModels;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace ApplicationSite.Controllers
@@ -23,18 +21,12 @@ namespace ApplicationSite.Controllers
         private ApplicationUserManager _userManager;
 
         /// <summary>
-        /// Sets up the user manager.
+        ///     Sets up the user manager.
         /// </summary>
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         [HttpGet]
@@ -55,7 +47,7 @@ namespace ApplicationSite.Controllers
         [Authorize(Roles = "Admin, Employee")]
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Positions/Create
@@ -64,7 +56,8 @@ namespace ApplicationSite.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Employee")]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,Description,PositionStatus")] PositionsViewModel positionVm)
+        public async Task<ActionResult> Create(
+            [Bind(Include = "Id,Title,Description,PositionStatus")] PositionsViewModel positionVm)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +83,7 @@ namespace ApplicationSite.Controllers
             {
                 return HttpNotFound();
             }
-            var position = new PositionsViewModel()
+            var position = new PositionsViewModel
             {
                 Description = positions.Description,
                 Id = id,
@@ -105,7 +98,8 @@ namespace ApplicationSite.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Employee")]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,Description,PositionStatus")] PositionsViewModel positionVm)
+        public async Task<ActionResult> Edit(
+            [Bind(Include = "Id,Title,Description,PositionStatus")] PositionsViewModel positionVm)
         {
             if (!ModelState.IsValid)
             {
@@ -132,7 +126,7 @@ namespace ApplicationSite.Controllers
                 return HttpNotFound();
             }
             var positionVm = new PositionsViewModel();
-            positionVm.MapTo(position.Id, position.Title, position.Description, (PositionStatus)position.PositionStatus);
+            positionVm.MapTo(position.Id, position.Title, position.Description, position.PositionStatus);
             return View(positionVm);
         }
 
@@ -153,17 +147,28 @@ namespace ApplicationSite.Controllers
         public async Task<ActionResult> Apply(int id)
         {
             // If user enters apply URL directly, do server side validation to see if they have already applied.
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            var appliedCanidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+            AppliedCandidates appliedCanidate =
+                await
+                    _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
             if (appliedCanidate != null)
             {
                 // TODO: Instead of just sending to index, send to error page saying they have already applied.
                 return RedirectToAction("Index", "PositionsList");
             }
 
-            var position = await _db.Positions.FindAsync(id);
-            var resumes = await _db.Resumes.ToListAsync();
-            var list = resumes.Where(resume => resume.User.Id == user.Id).Select(resume => new SelectListItem {Value = resume.Id.ToString(CultureInfo.InvariantCulture), Text = resume.Title}).ToList();
+            Positions position = await _db.Positions.FindAsync(id);
+            List<Resume> resumes = await _db.Resumes.ToListAsync();
+            List<SelectListItem> list =
+                resumes.Where(resume => resume.User.Id == user.Id)
+                    .Select(
+                        resume =>
+                            new SelectListItem
+                            {
+                                Value = resume.Id.ToString(CultureInfo.InvariantCulture),
+                                Text = resume.Title
+                            })
+                    .ToList();
             var selectList = new SelectList(list, "Value", "Text", 0);
             var appliedCandidateViewModel = new AppliedCandidateViewModel();
             appliedCandidateViewModel.MapTo(selectList, position, user);
@@ -172,17 +177,22 @@ namespace ApplicationSite.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin, Employee, Candidate")]
-        public async Task<ActionResult> Apply([Bind(Include = "DefaultSelectItem,Position,CurrentUser")]AppliedCandidateViewModel appliedCandidateViewModel)
+        public async Task<ActionResult> Apply(
+            [Bind(Include = "DefaultSelectItem,Position,CurrentUser")] AppliedCandidateViewModel
+                appliedCandidateViewModel)
         {
-            
             if (!ModelState.IsValid)
             {
                 return View(appliedCandidateViewModel);
             }
-            var user = await _db.Users.FirstAsync(node => node.Id == appliedCandidateViewModel.CurrentUser.Id);
-            var position = await _db.Positions.FirstAsync(node => node.Id == appliedCandidateViewModel.Position.Id);
+            IdentityUser user = await _db.Users.FirstAsync(node => node.Id == appliedCandidateViewModel.CurrentUser.Id);
+            Positions position =
+                await _db.Positions.FirstAsync(node => node.Id == appliedCandidateViewModel.Position.Id);
 
-            var appliedCanidateCheck = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == position.Id);
+            AppliedCandidates appliedCanidateCheck =
+                await
+                    _db.AppliedCandidates.FirstOrDefaultAsync(
+                        node => node.User.Id == user.Id && node.Position.Id == position.Id);
             if (appliedCanidateCheck != null)
             {
                 // Doing another check if the user has already applyed for a position.
@@ -192,14 +202,14 @@ namespace ApplicationSite.Controllers
                 return RedirectToAction("Index", "PositionsList");
             }
 
-            var resume = await _db.Resumes.FirstAsync(node => node.Id == appliedCandidateViewModel.DefaultSelectItem);
-            var appliedCanidate = new AppliedCandidates()
+            Resume resume = await _db.Resumes.FirstAsync(node => node.Id == appliedCandidateViewModel.DefaultSelectItem);
+            var appliedCanidate = new AppliedCandidates
             {
                 AppliedCandidateState = AppliedCandidateStateOptions.New,
                 Position = position,
                 Resume = resume,
                 AppliedTime = DateTime.Now,
-                User = (ApplicationUser)user
+                User = (ApplicationUser) user
             };
             _db.AppliedCandidates.Add(appliedCanidate);
             await _db.SaveChangesAsync();
@@ -219,8 +229,10 @@ namespace ApplicationSite.Controllers
         [Authorize(Roles = "Admin, Employee, Candidate")]
         public async Task<ActionResult> Withdraw(int id)
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            var appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+            AppliedCandidates appliedCandidate =
+                await
+                    _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
             if (appliedCandidate == null)
             {
                 // The user does not have a position request on file,
@@ -236,8 +248,10 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> WithdrawConfirmed(int id)
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            var appliedCandidate = await _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
+            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
+            AppliedCandidates appliedCandidate =
+                await
+                    _db.AppliedCandidates.FirstOrDefaultAsync(node => node.User.Id == user.Id && node.Position.Id == id);
             if (appliedCandidate == null)
             {
                 // The user does not have a position request on file,
@@ -257,12 +271,12 @@ namespace ApplicationSite.Controllers
             }
             return RedirectToAction("WithdrawSuccess", "Positions");
         }
+
         [HttpGet]
         [Authorize(Roles = "Admin, Employee, Candidate")]
         public ActionResult WithdrawSuccess()
         {
             return View();
         }
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationSite.Models
 {
@@ -10,6 +6,7 @@ namespace ApplicationSite.Models
     {
         [Key]
         public int Id { get; set; }
+
         public virtual ApplicationUser User { get; set; }
 
         [Required(AllowEmptyStrings = false)]

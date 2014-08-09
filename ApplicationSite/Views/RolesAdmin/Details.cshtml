@@ -27,7 +27,7 @@
 
 <table class="table">
 
-    @foreach (var item in ViewBag.Users)
+    @foreach (dynamic item in ViewBag.Users)
     {
         <tr>
             <td>
@@ -37,9 +37,6 @@
     }
 </table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new {id = Model.Id}) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-
-
-

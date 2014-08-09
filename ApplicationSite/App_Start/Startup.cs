@@ -30,9 +30,9 @@ namespace ApplicationSite
                 {
                     // Enables the application to validate the security stamp when the user logs in.
                     // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                        validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+                    OnValidateIdentity =
+                        SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
+                            TimeSpan.FromMinutes(30), (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
@@ -58,9 +58,7 @@ namespace ApplicationSite
              */
             const string clientId = "620233568410-lcooujj8i9gvpt0kfto6mo88afnib41v.apps.googleusercontent.com";
             const string clientSecret = "KcAGGcTcxodiBQ-9_7799hMQ";
-            app.UseGoogleAuthentication(
-                clientId: clientId,
-                clientSecret: clientSecret);
+            app.UseGoogleAuthentication(clientId, clientSecret);
         }
     }
 }

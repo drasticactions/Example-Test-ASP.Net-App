@@ -23,14 +23,16 @@ namespace ApplicationSite.ViewModels
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessageResourceType = typeof (Resources.Resources), ErrorMessageResourceName = "PasswordLengthError", MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceType = typeof (Resources.Resources),
+            ErrorMessageResourceName = "PasswordLengthError", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof (Resources.Resources), Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(ResourceType = typeof (Resources.Resources), Name = "ConfirmPassword")]
-        [Compare("Password", ErrorMessageResourceType = typeof (Resources.Resources), ErrorMessageResourceName = "PasswordConfirmationError")]
+        [Compare("Password", ErrorMessageResourceType = typeof (Resources.Resources),
+            ErrorMessageResourceName = "PasswordConfirmationError")]
         public string ConfirmPassword { get; set; }
     }
 }

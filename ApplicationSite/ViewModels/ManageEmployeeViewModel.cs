@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using ApplicationSite.Models;
 
 namespace ApplicationSite.ViewModels
@@ -14,7 +11,8 @@ namespace ApplicationSite.ViewModels
 
         public AppliedCandidateStateOptions AppliedCandidateStateOptions { get; set; }
 
-        public void MapTo(List<Positions> positions, List<AppliedCandidates> candidates, AppliedCandidateStateOptions option)
+        public void MapTo(List<Positions> positions, List<AppliedCandidates> candidates,
+            AppliedCandidateStateOptions option)
         {
             AllPositions = positions;
             AllAppliedCandidates = candidates;

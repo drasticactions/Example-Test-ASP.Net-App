@@ -1,6 +1,5 @@
+using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using ApplicationSite.Models;
 using Microsoft.AspNet.Identity;
@@ -9,14 +8,16 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace ApplicationSite
 {
-    public class ApplicationDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext> 
+    public class ApplicationDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
     {
-        protected  override void Seed(ApplicationDbContext context) {
+        protected override void Seed(ApplicationDbContext context)
+        {
             InitializeIdentityForEf(context);
             base.Seed(context);
         }
 
-        public static void InitializeIdentityForEf(ApplicationDbContext db) {
+        public static void InitializeIdentityForEf(ApplicationDbContext db)
+        {
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
             const string email = "admin@admin.com";
@@ -24,22 +25,24 @@ namespace ApplicationSite
             const string password = "123456";
             const string roleName = "Admin";
 
-            var role = roleManager.FindByName(roleName);
+            IdentityRole role = roleManager.FindByName(roleName);
             if (role == null)
             {
                 role = new IdentityRole(roleName);
                 roleManager.Create(role);
             }
 
-            var user = userManager.FindByName(name);
-            if (user == null) {
-                user = new ApplicationUser { UserName = name, Email = email };
+            ApplicationUser user = userManager.FindByName(name);
+            if (user == null)
+            {
+                user = new ApplicationUser {UserName = name, Email = email};
                 userManager.Create(user, password);
                 userManager.SetLockoutEnabled(user.Id, false);
             }
 
-            var rolesForUser = userManager.GetRoles(user.Id);
-            if (!rolesForUser.Contains(role.Name)) {
+            IList<string> rolesForUser = userManager.GetRoles(user.Id);
+            if (!rolesForUser.Contains(role.Name))
+            {
                 userManager.AddToRole(user.Id, role.Name);
             }
 
@@ -58,7 +61,7 @@ namespace ApplicationSite
                 roleManager.Create(role);
             }
 
-            for (var index = 0; index <= 3; index++)
+            for (int index = 0; index <= 3; index++)
             {
                 var testUser = new ApplicationUser
                 {
@@ -67,11 +70,11 @@ namespace ApplicationSite
                 };
                 userManager.Create(testUser, password);
                 userManager.SetLockoutEnabled(testUser.Id, false);
-                var employeeRole = roleManager.FindByName("Employee");
+                IdentityRole employeeRole = roleManager.FindByName("Employee");
                 userManager.AddToRole(testUser.Id, employeeRole.Id);
             }
 
-            for (var index = 0; index <= 3; index ++)
+            for (int index = 0; index <= 3; index ++)
             {
                 var position = new Positions
                 {
@@ -82,7 +85,7 @@ namespace ApplicationSite
                 db.Positions.Add(position);
             }
 
-            for (var index = 0; index <= 3; index++)
+            for (int index = 0; index <= 3; index++)
             {
                 var position = new Positions
                 {

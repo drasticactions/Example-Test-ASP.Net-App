@@ -1,4 +1,5 @@
-﻿@model ApplicationSite.ViewModels.ManageCandidateViewModel
+﻿@using ApplicationSite.Models
+@model ApplicationSite.ViewModels.ManageCandidateViewModel
 @{
     ViewBag.Title = "ManageCandidate";
 }
@@ -9,12 +10,12 @@
         @if (Model.Resumes.Any(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
         {
             <div class="list-group">
-                @foreach (var item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
+                @foreach (Resume item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
                 {
                     <div class="list-group-item">
                         <p class="list-group-item-text">@item.Title</p>
-                            <button class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Resumes", new {id = item.Id}, null)' " type="button" title="Remove Resume">Remove</button>
-                            <button class="btn btn-default" onclick="location.href = '@Url.Action("Download", "Resumes", new {id = item.Id}, null)' " type="button" title="Download Resume">Download</button>
+                        <button class="btn btn-default" onclick=" location.href = '@Url.Action("Delete", "Resumes", new {id = item.Id}, null)' " type="button" title="Remove Resume">Remove</button>
+                        <button class="btn btn-default" onclick=" location.href = '@Url.Action("Download", "Resumes", new {id = item.Id}, null)' " type="button" title="Download Resume">Download</button>
                     </div>
                 }
             </div>
@@ -31,7 +32,7 @@
         @if (!Model.Resumes.Any(node => Model.AppliedForPositions.All(apply => apply.Resume.Id != node.Id)))
         {
             <div class="list-group">
-                @foreach (var item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id == node.Id)))
+                @foreach (Resume item in Model.Resumes.Where(node => Model.AppliedForPositions.All(apply => apply.Resume.Id == node.Id)))
                 {
                     <div class="list-group-item">
                         <p class="list-group-item-text">@item.Title</p>
@@ -39,15 +40,15 @@
                             <div class="panel-heading">Applied with</div>
                             <div class="panel-body">
                                 <ul class="list-group">
-                                    @foreach (var applyPosition in Model.AppliedForPositions.Where(node => node.Resume.Id == item.Id))
+                                    @foreach (AppliedCandidates applyPosition in Model.AppliedForPositions.Where(node => node.Resume.Id == item.Id))
                                     {
                                         <li class="list-group-item">@applyPosition.Position.Title</li>
                                     }
                                 </ul>
                             </div>
                         </div>
-                            <button class="btn btn-default disabled" onclick="location.href='@Url.Action("Delete", "Resumes", new { id = item.Id }, null)'" type="button" title="Remove Resume">Remove</button>
-                            <button class="btn btn-default" onclick="location.href='@Url.Action("Download", "Resumes", new { id = item.Id }, null)'" type="button" title="Download Resume">Download</button>
+                        <button class="btn btn-default disabled" onclick=" location.href = '@Url.Action("Delete", "Resumes", new {id = item.Id}, null)' " type="button" title="Remove Resume">Remove</button>
+                        <button class="btn btn-default" onclick=" location.href = '@Url.Action("Download", "Resumes", new {id = item.Id}, null)' " type="button" title="Download Resume">Download</button>
                     </div>
                 }
             </div>
@@ -73,9 +74,9 @@
         {
             <h2>Applied Positions</h2>
             <div class="list-group">
-                @foreach (var item in Model.AppliedForPositions)
+                @foreach (AppliedCandidates item in Model.AppliedForPositions)
                 {
-                    <a href="#" class="list-group-item">
+                    <a href="@Url.Action("Details", "PositionsList", new {id = item.Position.Id})" class="list-group-item">
                         <h4 class="list-group-item-heading">@item.Position.Title</h4>
                         <p class="list-group-item-text">@item.Position.Description</p>
                     </a>

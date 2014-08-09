@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
 using ApplicationSite.Models;
 
 namespace ApplicationSite.ViewModels
@@ -13,11 +8,11 @@ namespace ApplicationSite.ViewModels
         public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Title")]
+        [Display(ResourceType = typeof (Resources.Resources), Name = "Title")]
         public string Title { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Description")]
+        [Display(ResourceType = typeof (Resources.Resources), Name = "Description")]
         public string Description { get; set; }
 
         [Display(ResourceType = typeof (Resources.Resources), Name = "PositionStatus")]
@@ -25,10 +20,10 @@ namespace ApplicationSite.ViewModels
 
         public void MapTo(int id, string title, string description, PositionStatus positionStatus)
         {
-            this.Id = id;
-            this.Title = title;
-            this.Description = description;
-            this.PositionStatus = positionStatus;
+            Id = id;
+            Title = title;
+            Description = description;
+            PositionStatus = positionStatus;
         }
     }
 }

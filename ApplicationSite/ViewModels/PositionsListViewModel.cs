@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using ApplicationSite.Models;
 
 namespace ApplicationSite.ViewModels
@@ -12,7 +9,7 @@ namespace ApplicationSite.ViewModels
 
         public void MapTo(List<Positions> positions)
         {
-            this.PositionsList = positions;
+            PositionsList = positions;
         }
     }
 }

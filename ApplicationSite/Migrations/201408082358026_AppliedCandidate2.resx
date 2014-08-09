@@ -117,76 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
+  <data name="Target" xml:space="preserve">
+    <value>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</value>
   </data>
-  <data name="LoginViewModel_Username_Username" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="LoginViewModel_Password_Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="LoginViewModel_RememberMe_Remember_me_" xml:space="preserve">
-    <value>Remember me?</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>Phone Number</value>
-  </data>
-  <data name="PasswordLengthError" xml:space="preserve">
-    <value>The {0} must be at least {2} characters long.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="ConfirmPassword" xml:space="preserve">
-    <value>Confirm password</value>
-  </data>
-  <data name="PasswordConfirmationError" xml:space="preserve">
-    <value>The password and confirmation password do not match.</value>
-  </data>
-  <data name="UsersAdminController_Edit_Something_failed_" xml:space="preserve">
-    <value>An error has occurred.</value>
-  </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>First Name</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>Last Name</value>
-  </data>
-  <data name="RoleName" xml:space="preserve">
-    <value>Role Name</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="ResumeNotUploaded" xml:space="preserve">
-    <value>Resume Not Uploaded</value>
-  </data>
-  <data name="WrongFiletype" xml:space="preserve">
-    <value>Wrong file type uploaded</value>
-  </data>
-  <data name="PositionStatus" xml:space="preserve">
-    <value>Position Status</value>
-  </data>
-  <data name="ResumeDeleteOpenPositionError" xml:space="preserve">
-    <value>We could not delete your resume. It may be attached to an open position.</value>
-  </data>
-  <data name="ErrorMessageDeleteGeneric" xml:space="preserve">
-    <value>An error has occurred</value>
-  </data>
-  <data name="ResumeFilePdf" xml:space="preserve">
-    <value>Resume File (PDF)</value>
-  </data>
-  <data name="ResumeTitle" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="CandidateStatus" xml:space="preserve">
-    <value>Candidate Status</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

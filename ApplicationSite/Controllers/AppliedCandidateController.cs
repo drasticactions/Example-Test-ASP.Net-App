@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ApplicationSite.Models;
 
@@ -50,7 +45,8 @@ namespace ApplicationSite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,AppliedCandidateState")] AppliedCandidates appliedCandidates)
+        public async Task<ActionResult> Create(
+            [Bind(Include = "Id,AppliedCandidateState")] AppliedCandidates appliedCandidates)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +80,8 @@ namespace ApplicationSite.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin,Employee")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,AppliedCandidateState")] AppliedCandidates appliedCandidates)
+        public async Task<ActionResult> Edit(
+            [Bind(Include = "Id,AppliedCandidateState")] AppliedCandidates appliedCandidates)
         {
             if (ModelState.IsValid)
             {

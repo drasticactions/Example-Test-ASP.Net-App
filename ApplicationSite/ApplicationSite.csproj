@@ -211,14 +211,11 @@
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Positions\Create.cshtml" />
     <Content Include="Views\Positions\Delete.cshtml" />
-    <Content Include="Views\Positions\Details.cshtml" />
     <Content Include="Views\Positions\Edit.cshtml" />
-    <Content Include="Views\Positions\Index.cshtml" />
     <Content Include="Views\Resumes\Create.cshtml" />
     <Content Include="Views\Resumes\Delete.cshtml" />
     <Content Include="Views\Resumes\Details.cshtml" />
     <Content Include="Views\Resumes\Edit.cshtml" />
-    <Content Include="Views\Resumes\Index.cshtml" />
     <Content Include="Views\Positions\Apply.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -228,7 +225,6 @@
     <Content Include="Views\AppliedCandidate\Delete.cshtml" />
     <Content Include="Views\AppliedCandidate\Details.cshtml" />
     <Content Include="Views\AppliedCandidate\Edit.cshtml" />
-    <Content Include="Views\AppliedCandidate\Index.cshtml" />
     <Content Include="Views\RolesAdmin\Delete.cshtml" />
     <Content Include="Views\RolesAdmin\Details.cshtml" />
     <Content Include="Views\RolesAdmin\Index.cshtml" />
@@ -314,6 +310,10 @@
     <Compile Include="Migrations\201408081601137_AppliedCandidate1.Designer.cs">
       <DependentUpon>201408081601137_AppliedCandidate1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408082358026_AppliedCandidate2.cs" />
+    <Compile Include="Migrations\201408082358026_AppliedCandidate2.Designer.cs">
+      <DependentUpon>201408082358026_AppliedCandidate2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppliedCandidates.cs" />
     <Compile Include="Models\Positions.cs" />
@@ -355,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408081601137_AppliedCandidate1.resx">
       <DependentUpon>201408081601137_AppliedCandidate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408082358026_AppliedCandidate2.resx">
+      <DependentUpon>201408082358026_AppliedCandidate2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

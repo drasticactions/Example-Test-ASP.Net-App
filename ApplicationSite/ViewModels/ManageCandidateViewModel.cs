@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using ApplicationSite.Models;
 
 namespace ApplicationSite.ViewModels
@@ -10,6 +7,6 @@ namespace ApplicationSite.ViewModels
     {
         public List<AppliedCandidates> AppliedForPositions { get; set; }
 
-        public List<Resume> Resumes { get; set; } 
+        public List<Resume> Resumes { get; set; }
     }
 }
