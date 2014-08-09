@@ -9,7 +9,6 @@ namespace ApplicationSite.ViewModels
         [Display(ResourceType = typeof (Resources.Resources), Name = "ResumeTitle")]
         public string Title { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
         [DataType(DataType.Upload)]
         [Display(ResourceType = typeof (Resources.Resources), Name = "ResumeFilePdf")]
         public HttpPostedFileBase ResumeFile { get; set; }
