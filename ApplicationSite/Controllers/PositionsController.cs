@@ -186,6 +186,7 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("Index");
         }
 
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         [Authorize(Roles = "Admin, Employee, Candidate")]
         [HttpGet]
         public async Task<ActionResult> Apply(int id)
@@ -269,6 +270,7 @@ namespace ApplicationSite.Controllers
             base.Dispose(disposing);
         }
 
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         [HttpGet]
         [Authorize(Roles = "Admin, Employee, Candidate")]
         public async Task<ActionResult> Withdraw(int id)
