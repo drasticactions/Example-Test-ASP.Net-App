@@ -189,4 +189,7 @@
   <data name="CandidateStatus" xml:space="preserve">
     <value>Candidate Status</value>
   </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+    <value>Invalid login attempt.</value>
+  </data>
 </root>

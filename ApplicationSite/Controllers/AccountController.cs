@@ -88,9 +88,8 @@ namespace ApplicationSite.Controllers
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", Resources.Resources.InvalidLoginAttempt);
                     return View(model);
             }
         }
@@ -116,7 +115,6 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            // TODO: Refactor all register code to go through one function.
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -173,8 +171,12 @@ namespace ApplicationSite.Controllers
                 await user.GenerateUserIdentityAsync(UserManager));
         }
 
-        //
-        // POST: /Account/ExternalLogin
+        /// <summary>
+        /// Sets up the external login.
+        /// </summary>
+        /// <param name="provider">The login provider string.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>An Action Result.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -204,7 +206,6 @@ namespace ApplicationSite.Controllers
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
@@ -218,15 +219,18 @@ namespace ApplicationSite.Controllers
             }
         }
 
-        //
-        // POST: /Account/ExternalLoginConfirmation
+        /// <summary>
+        /// Confirms an external login.
+        /// </summary>
+        /// <param name="model">The external login confirmation view model.</param>
+        /// <param name="returnUrl">The return URL.</param>
+        /// <returns>An action result.</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
             string returnUrl)
         {
-            // TODO: Refactor all register code to go through one function.
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Manage");
