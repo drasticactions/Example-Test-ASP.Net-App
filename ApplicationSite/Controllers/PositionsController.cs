@@ -7,11 +7,13 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using ApplicationSite.Models;
 using ApplicationSite.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Postal;
 
 namespace ApplicationSite.Controllers
 {
@@ -105,11 +107,26 @@ namespace ApplicationSite.Controllers
             {
                 return View(positionVm);
             }
-            var position = new Positions();
-            position.MapTo(positionVm.Id, positionVm.Title, positionVm.Description, positionVm.PositionStatus);
-            _db.Entry(position).State = EntityState.Modified;
+
+            var appliedCandidates = _db.AppliedCandidates.Where(node => node.Position.Id == positionVm.Id).ToList();
+            var oldPosition = _db.Positions.Find(positionVm.Id);
+            if (appliedCandidates.Any())
+            {
+                foreach (var candidate in appliedCandidates)
+                {
+                    _db.Entry<AppliedCandidates>(candidate).Reference("User").Load();
+                    dynamic email = new Email("PositionChanged");
+                    email.To = candidate.User.Email;
+                    email.FirstName = candidate.User.FirstName;
+                    email.PositionTitle = oldPosition.Title;
+                    email.PositionId = positionVm.Id;
+                    email.Send();
+                }
+            }
+            oldPosition.MapTo(positionVm.Id, positionVm.Title, positionVm.Description, positionVm.PositionStatus);
+            _db.Entry(oldPosition).State = EntityState.Modified;
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("ManageEmployee", "Manage");
         }
 
         // GET: Positions/Delete/5

@@ -132,13 +132,14 @@ namespace ApplicationSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Title,FileName,Path")] Resume resume)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _db.Entry(resume).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return View(resume);
             }
-            return View(resume);
+
+            _db.Entry(resume).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: Resumes/Delete/5
