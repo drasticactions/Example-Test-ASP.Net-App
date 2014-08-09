@@ -1,0 +1,20 @@
+﻿@using ApplicationSite.Models
+@model ApplicationSite.ViewModels.PositionsListViewModel
+
+@{
+    ViewBag.Title = "Position List";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Open Positions</h2>
+        <div class="list-group">
+            @foreach (Positions item in Model.PositionsList)
+            {
+                <a href="@Url.Action("Details", "PositionsList", new {id = item.Id}, null)" class="list-group-item">
+                    <h3 class="list-group-item-heading">@item.Title</h3>
+                </a>
+            }
+        </div>
+    </div>
+</div>

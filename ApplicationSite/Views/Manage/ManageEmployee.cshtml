@@ -53,7 +53,7 @@
             <div class="list-group">
                 @foreach (Positions item in Model.AllPositions)
                 {
-                    <a href="@Url.Action("Details", "PositionsList", new {id = item.Id})" class="list-group-item">
+                    <a href="@Url.Action("Edit", "Positions", new {id = item.Id})" class="list-group-item">
                         <h4 class="list-group-item-heading">@item.Title</h4>
                         <p>@item.PositionStatus</p>
                     </a>

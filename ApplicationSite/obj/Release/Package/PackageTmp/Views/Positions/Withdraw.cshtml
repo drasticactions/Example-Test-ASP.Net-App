@@ -1,0 +1,32 @@
+﻿@model ApplicationSite.Models.AppliedCandidates
+@{
+    ViewBag.Title = "Withdraw";
+}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Withdraw Application</h4>
+        </div>
+        <div class="modal-body">
+            <h4>Are you sure you want to withdraw your application for the "@Model.Position.Title" position?</h4>
+            <div>
+                @using (Html.BeginForm())
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="submit" value="Withdraw" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

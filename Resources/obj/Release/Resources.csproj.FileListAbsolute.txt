@@ -1,0 +1,6 @@
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\bin\Release\Resources.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\bin\Release\Resources.pdb
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Release\Resources.Resources.resources
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Release\Resources.csproj.GenerateResource.Cache
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Release\Resources.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Resources\obj\Release\Resources.pdb

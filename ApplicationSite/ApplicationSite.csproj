@@ -238,6 +238,7 @@
     <Content Include="Views\Positions\Withdraw.cshtml" />
     <Content Include="Views\Positions\ApplySuccess.cshtml" />
     <Content Include="Views\Positions\WithdrawSuccess.cshtml" />
+    <None Include="Properties\PublishProfiles\drasticactionsinc.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

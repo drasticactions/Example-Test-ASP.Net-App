@@ -1,0 +1,75 @@
+﻿@using ApplicationSite.Models
+@model ApplicationSite.ViewModels.ManageEmployeeViewModel
+
+@{
+    ViewBag.Title = "ManageEmployee";
+}
+
+<div class="container">
+    <div class="row">
+        <h2>All Candidates</h2>
+        @Html.EnumDropDownListFor(model => model.AppliedCandidateStateOptions, new {onchange = "location ='https://' + location.host + '/Manage/ManageEmployee/' + this.value;", htmlAttributes = new {@class = "form-control"}})
+        @if (Model.AllAppliedCandidates.Any())
+        {
+            <div class="list-group">
+                @foreach (AppliedCandidates item in Model.AllAppliedCandidates)
+                {
+                    <div class="list-group-item">
+                        <dl class="dl-horizontal">
+                            <dt>Title</dt>
+                            <dd>@Html.DisplayFor(modelItem => item.Position.Title)</dd>
+                            <dt>Candidate</dt>
+                            <dd>@Html.DisplayFor(modelItem => item.User.UserName)</dd>
+                            <dt>Candidate Status</dt>
+                            <dd>@Html.DisplayFor(modelItem => item.AppliedCandidateState)</dd>
+                            <dt>Applied Date</dt>
+                            <dd>@Html.DisplayFor(modelItem => item.AppliedTime)</dd>
+                            <dt>Resume</dt>
+                            <dd><button class="btn btn-default" onclick=" location.href = '@Url.Action("Download", "Resumes", new {id = item.Resume.Id}, null)' " type="button" title="Download Resume">Download Resume</button></dd>
+                            <dt>Options</dt>
+                            <dd>
+                                @Html.ActionLink("Edit", "Edit", "AppliedCandidate", new {id = item.Id}, null) |
+                                @Html.ActionLink("Delete", "Delete", "AppliedCandidate", new {id = item.Id}, null)
+                            </dd>
+                        </dl>
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div>
+                <h4>There are no active applications to check!</h4>
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <h3>All Positions</h3>
+        @if (Model.AllPositions.Any())
+        {
+            <div class="list-group">
+                @foreach (Positions item in Model.AllPositions)
+                {
+                    <a href="@Url.Action("Details", "PositionsList", new {id = item.Id})" class="list-group-item">
+                        <h4 class="list-group-item-heading">@item.Title</h4>
+                        <p>@item.PositionStatus</p>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div>
+                <h4>There are no positions! Add some!</h4>
+            </div>
+        }
+    </div>
+    <div class="col-lg-6">
+        @{
+            Html.RenderAction("Create", "Positions");
+        }
+    </div>
+</div>

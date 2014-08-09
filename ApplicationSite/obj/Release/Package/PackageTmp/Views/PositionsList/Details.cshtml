@@ -1,0 +1,33 @@
+﻿@using MarkdownDeep
+@model ApplicationSite.ViewModels.PositionsListDetailViewModel
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2>@Model.Position.Title</h2>
+        @{
+            var md = new Markdown {ExtraMode = true, SafeMode = false};
+            @Html.Raw(md.Transform(Model.Position.Description))
+        }
+        @if (!Model.HasAlreadyApplied)
+        {
+            <button id="resumeButton" onclick=" setupSiteModal('#resumeContainer', '#resumeModal'); " class="btn btn-default" type="button" title="Apply">Apply</button>
+        }
+        else
+        {
+            <button id="withdrawButton" class="btn btn-default" onclick=" setupSiteModal('#withdrawContainer', '#withdrawModal'); "  type="button" title="Withdraw">Withdraw</button>
+        }
+    </div>
+</div>
+
+<div id='withdrawModal' class='modal fade in' data-url='@Url.Action("Withdraw", "Positions", new {id = Model.Position.Id}, null)'>
+    <div id='withdrawContainer'>
+    </div>
+</div>
+
+<div id='resumeModal' class='modal fade in' data-url='@Url.Action("Apply", "Positions", new {id = Model.Position.Id}, null)'>
+    <div id='resumeContainer'>
+    </div>
+</div>

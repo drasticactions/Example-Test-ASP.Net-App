@@ -24,9 +24,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @{
-                    var test = new Dictionary<string, string> {{"data-provide", "markdown"}, {"rows", "10"}};
-                }
                 @Html.TextAreaFor(model => model.Description, new {@data_provide = "markdown", @rows = "10"})
                 @Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
             </div>
