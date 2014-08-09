@@ -191,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-markdown.min.css" />
+    <Content Include="Content\offcanvas.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -212,6 +213,7 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\bootstrap-markdown.js" />
     <Content Include="Scripts\markdown.js" />
+    <Content Include="Scripts\offcanvas.js" />
     <Content Include="Scripts\Site.js" />
     <Content Include="Scripts\to-markdown.js" />
     <Content Include="Views\Manage\Index.cshtml" />
@@ -249,6 +251,10 @@
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\PositionChanged.cshtml" />
     <Content Include="Views\Emails\PositionChanged.Html.cshtml" />
+    <Content Include="Views\Emails\PositionClosed.Html.cshtml" />
+    <Content Include="Views\Emails\PositionReopened.cshtml" />
+    <Content Include="Views\Emails\PositionReopened.Html.cshtml" />
+    <Content Include="Views\Emails\PositionClosed.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

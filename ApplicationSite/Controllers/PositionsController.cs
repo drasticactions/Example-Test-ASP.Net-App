@@ -110,23 +110,50 @@ namespace ApplicationSite.Controllers
 
             var appliedCandidates = _db.AppliedCandidates.Where(node => node.Position.Id == positionVm.Id).ToList();
             var oldPosition = _db.Positions.Find(positionVm.Id);
-            if (appliedCandidates.Any())
+            if (positionVm.PositionStatus == PositionStatus.Closed && oldPosition.PositionStatus == PositionStatus.Open)
             {
-                foreach (var candidate in appliedCandidates)
-                {
-                    _db.Entry<AppliedCandidates>(candidate).Reference("User").Load();
-                    dynamic email = new Email("PositionChanged");
-                    email.To = candidate.User.Email;
-                    email.FirstName = candidate.User.FirstName;
-                    email.PositionTitle = oldPosition.Title;
-                    email.PositionId = positionVm.Id;
-                    email.Send();
-                }
+                // Filter all appliedCandidates who are not "hired", and tell them that the position is closed.
+                appliedCandidates =
+                    appliedCandidates.Where(node => node.AppliedCandidateState != AppliedCandidateStateOptions.Hire).ToList();
+                this.SendEmail(appliedCandidates, oldPosition, positionVm, "PositionClosed");
+            }
+            else if (positionVm.PositionStatus == PositionStatus.Open &&
+                     oldPosition.PositionStatus == PositionStatus.Closed)
+            {
+                // Tell all candidates who have not been contacted yet (or were rejected) that the position has been reopened.
+                appliedCandidates =
+                    appliedCandidates.Where(node => node.AppliedCandidateState != AppliedCandidateStateOptions.Hire 
+                        && node.AppliedCandidateState != AppliedCandidateStateOptions.Reject 
+                        && node.AppliedCandidateState != AppliedCandidateStateOptions.Removed).ToList();
+                this.SendEmail(appliedCandidates, oldPosition, positionVm, "PositionReopened");
+            }
+            else if (positionVm.PositionStatus == PositionStatus.Open)
+            {
+                // Send "Position Changed" email to all.
+                this.SendEmail(appliedCandidates, oldPosition, positionVm, "PositionChanged");
             }
             oldPosition.MapTo(positionVm.Id, positionVm.Title, positionVm.Description, positionVm.PositionStatus);
             _db.Entry(oldPosition).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return RedirectToAction("ManageEmployee", "Manage");
+        }
+
+
+
+        public void SendEmail(List<AppliedCandidates> appliedCandidates, Positions oldPosition,
+            PositionsViewModel positionVm, string view)
+        {
+            if (!appliedCandidates.Any()) return;
+            foreach (var candidate in appliedCandidates)
+            {
+                _db.Entry<AppliedCandidates>(candidate).Reference("User").Load();
+                dynamic email = new Email(view);
+                email.To = candidate.User.Email;
+                email.FirstName = candidate.User.FirstName;
+                email.PositionTitle = oldPosition.Title;
+                email.PositionId = positionVm.Id;
+                email.Send();
+            }
         }
 
         // GET: Positions/Delete/5

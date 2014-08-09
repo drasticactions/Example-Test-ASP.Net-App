@@ -1,0 +1,24 @@
+﻿@using ApplicationSite.Tools
+Content-Type: text/html; charset=utf-8
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Dumb Starbucks</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+    <body>
+        <h4>Hello @ViewBag.FirstName</h4>
+    
+        <p>We regret to inform you that one of the positions you applied for, "@ViewBag.PositionTitle", as been closed.</p>
+
+        <p>If the position is reopened in the future, we will let you know. If you wish to pull your application, you may do so from your configuration screen <a href="@Url.AbsoluteAction("ManageCandidate", "Manage", null)"> located here</a>.</p>
+
+        <p>
+            - Dumb Starbucks Management</p>
+        @Scripts.Render("~/bundles/bootstrap")
+    </body>
+</html>

@@ -26,12 +26,16 @@ namespace ApplicationSite
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
                 "~/Scripts/Site.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/offcanvas").Include(
+            "~/Scripts/offcanvas.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/markdown").Include(
                 "~/Scripts/markdown.js",
                 "~/Scripts/to-markdown.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap-markdown.min.css",
+                "~/Content/offcanvas.css",
                 "~/Content/site.css"));
         }
     }
