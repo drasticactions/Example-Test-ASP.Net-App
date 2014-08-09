@@ -45,6 +45,7 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("ManageCandidate");
         }
 
+         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         [Authorize(Roles = "Admin,Employee")]
         [HttpGet]
         public ActionResult ManageEmployee([DefaultValue(0)] int id)
@@ -102,14 +103,15 @@ namespace ApplicationSite.Controllers
         public ActionResult ManageCandidate(string sortOrder)
         {
             string userId = User.Identity.GetUserId();
-            List<AppliedCandidates> appliedForPositions =
-                _db.AppliedCandidates.Where(node => node.User.Id.Equals(userId)).ToList();
-            List<Resume> resumes = _db.Resumes.Where(node => node.User.Id.Equals(userId)).ToList();
-
+            var appliedForPositions =
+                _db.AppliedCandidates.Where(node => node.User.Id.Equals(userId));
+            List<Resume> resumes = _db.Resumes.Where(node => node.User.Id == userId && appliedForPositions.All(apply => apply.Resume.Id != node.Id)).ToList();
+            List<Resume> unreadResumes = _db.Resumes.Where(node => node.User.Id == userId && !appliedForPositions.All(apply => apply.Resume.Id != node.Id)).ToList();
             var manageCandidateVm = new ManageCandidateViewModel
             {
                 AppliedForPositions = appliedForPositions.OrderBy(node => node.AppliedTime).ToList(),
-                Resumes = resumes
+                Resumes = resumes,
+                UnreadResumes = unreadResumes
             };
             return View(manageCandidateVm);
         }
