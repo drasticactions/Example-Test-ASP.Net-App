@@ -81,15 +81,12 @@ namespace ApplicationSite.Controllers
         [Authorize(Roles = "Admin,Employee")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(
-            [Bind(Include = "Id,AppliedCandidateState")] AppliedCandidates appliedCandidates)
+            [Bind(Include = "Id,AppliedCandidateState,AppliedTime")] AppliedCandidates appliedCandidates)
         {
-            if (ModelState.IsValid)
-            {
-                _db.Entry(appliedCandidates).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index", "Manage");
-            }
-            return View(appliedCandidates);
+            if (!ModelState.IsValid) return View(appliedCandidates);
+            _db.Entry(appliedCandidates).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index", "Manage");
         }
 
         // GET: AppliedCandidate/Delete/5

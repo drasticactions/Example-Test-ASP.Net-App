@@ -141,3 +141,8 @@ C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\Appli
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Release\ApplicationSite.csproj.GenerateResource.Cache
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Release\ApplicationSite.dll
 C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\obj\Release\ApplicationSite.pdb
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\Postal.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\RazorEngine.dll
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\Postal.xml
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\RazorEngine.pdb
+C:\Users\Timothy\Documents\GitHub\ApplicationSite\Example-Test-ASP.Net-App\ApplicationSite\bin\RazorEngine.xml

@@ -1,0 +1,26 @@
+﻿@using ApplicationSite.Tools
+Content-Type: text/html; charset=utf-8
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Dumb Starbucks</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+    <body>
+        <h4>Hello @ViewBag.FirstName</h4>
+    
+        <p>We just wanted to let you know that one of the positions you applied for, "@ViewBag.PositionTitle", as been reopened!</p>
+
+        <p>You can view the position <a href="@Url.AbsoluteAction("Details", "PositionsList", new { id = @ViewBag.PositionId })">here</a>.</p>
+        
+        <p>As you already have a application, you do not have to do anything else. We will contact you if we wish to interview you for the position, if we have not done so already.</p>
+
+        <p>Thanks again for applying!
+            - Dumb Starbucks Management</p>
+        @Scripts.Render("~/bundles/bootstrap")
+    </body>
+</html>
