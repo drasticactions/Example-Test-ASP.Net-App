@@ -8,3 +8,7 @@ function setupSiteModal(containerName, modalName) {
         $(modalName).modal('show');
     });
 };
+
+$.ajaxSetup({
+    cache: false
+});
