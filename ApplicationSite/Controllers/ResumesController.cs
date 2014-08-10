@@ -28,13 +28,21 @@ namespace ApplicationSite.Controllers
             private set { _userManager = value; }
         }
 
+        /// <summary>
+        /// If an employee attempts to go here, redirect them to their dashboard.
+        /// </summary>
+        /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> Index()
         {
             return RedirectToAction("ManageEmployee", "Manage");
         }
 
-        // GET: Resumes/Details/5
+        /// <summary>
+        /// Gets the details of a resume.
+        /// </summary>
+        /// <param name="id">The resume id.</param>
+        /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> Details(int? id)
         {
@@ -56,9 +64,12 @@ namespace ApplicationSite.Controllers
             return PartialView("Create", new ResumeViewModel());
         }
 
-        // POST: Resumes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+       /// <summary>
+       /// Creates a new resume.
+       /// </summary>
+       /// <param name="resume">The resume view model.</param>
+       /// <param name="resumeFile">The resume file.</param>
+       /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Title")] ResumeViewModel resume,
@@ -107,7 +118,11 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("ManageCandidate", "Manage");
         }
 
-        // GET: Resumes/Edit/5
+        /// <summary>
+        /// Edits a resume of a user.
+        /// </summary>
+        /// <param name="id">The resume id.</param>
+        /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin,Employee")]
         public async Task<ActionResult> Edit(int? id)
         {
@@ -140,8 +155,13 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Resumes/Delete/5
-
+        /// <summary>
+        /// Deletes a resume
+        /// </summary>
+        /// <param name="id">The id of the resume.</param>
+        /// <returns>An action result.</returns>
+        [HttpGet]
+        [Authorize(Roles = "Admin,Employee,Candidate")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,7 +170,7 @@ namespace ApplicationSite.Controllers
             }
             Resume resume = await _db.Resumes.FindAsync(id);
 
-            // If a user tries to enter a 
+            // If a user tries to enter an id on their own.
 
             if (User.IsInRole("Candidate"))
             {
@@ -166,7 +186,11 @@ namespace ApplicationSite.Controllers
             return View(resume);
         }
 
-        // POST: Resumes/Delete/5
+        /// <summary>
+        /// Deletes the resume.
+        /// </summary>
+        /// <param name="id">The id of the resume.</param>
+        /// <returns>An action result.</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
@@ -194,6 +218,11 @@ namespace ApplicationSite.Controllers
             }
         }
 
+        /// <summary>
+        /// Downloads a resume.
+        /// </summary>
+        /// <param name="id">The resume id.</param>
+        /// <returns>An action result/PDF file.</returns>
         [HttpGet]
         public async Task<ActionResult> Download(int id)
         {

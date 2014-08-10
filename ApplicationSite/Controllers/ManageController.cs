@@ -45,7 +45,11 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("ManageCandidate");
         }
 
-         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        /// <summary>
+        /// Shows the employee dashboard.
+        /// </summary>
+        /// <param name="id">The candidate search id. If null, sets to "new".</param>
+        /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin,Employee")]
         [HttpGet]
         public ActionResult ManageEmployee([DefaultValue(0)] int id)
@@ -98,9 +102,13 @@ namespace ApplicationSite.Controllers
             return View(manageEmployeeVm);
         }
 
+        /// <summary>
+        /// Gets the candidates dashboard.
+        /// </summary>
+        /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin,Employee,Candidate")]
         [HttpGet]
-        public ActionResult ManageCandidate(string sortOrder)
+        public ActionResult ManageCandidate()
         {
             var errorMessage = TempData["ErrorMessage"] as string;
             if (!string.IsNullOrEmpty(errorMessage))

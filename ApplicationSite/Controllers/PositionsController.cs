@@ -7,7 +7,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using ApplicationSite.Models;
 using ApplicationSite.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -31,6 +30,10 @@ namespace ApplicationSite.Controllers
             private set { _userManager = value; }
         }
 
+        /// <summary>
+        /// Get the ApplySuccess view (Tells the user their application when through)
+        /// </summary>
+        /// <returns>An action result.</returns>
         [HttpGet]
         [Authorize(Roles = "Admin, Employee, Candidate")]
         public ActionResult ApplySuccess()
@@ -38,23 +41,31 @@ namespace ApplicationSite.Controllers
             return View();
         }
 
-        // GET: Positions
+        /// <summary>
+        /// Gets the Employee dashboard.
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> Index()
         {
             return RedirectToAction("ManageEmployee", "Manage");
         }
 
-        // GET: Positions/Create
+        /// <summary>
+        /// Gets the create position partial view.
+        /// </summary>
+        /// <returns>A partial action result.</returns>
         [Authorize(Roles = "Admin, Employee")]
         public ActionResult Create()
         {
             return PartialView();
         }
 
-        // POST: Positions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Creates a new position.
+        /// </summary>
+        /// <param name="positionVm">The position view model.</param>
+        /// <returns>An action result.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Employee")]
@@ -139,7 +150,13 @@ namespace ApplicationSite.Controllers
         }
 
 
-
+        /// <summary>
+        /// Sends an email to a user.
+        /// </summary>
+        /// <param name="appliedCandidates">The applied candidates list.</param>
+        /// <param name="oldPosition">The original position.</param>
+        /// <param name="positionVm">The new position view model.</param>
+        /// <param name="view">The email view.</param>
         public void SendEmail(List<AppliedCandidates> appliedCandidates, Positions oldPosition,
             PositionsViewModel positionVm, string view)
         {
@@ -156,7 +173,11 @@ namespace ApplicationSite.Controllers
             }
         }
 
-        // GET: Positions/Delete/5
+       /// <summary>
+       /// Deletes a position.
+       /// </summary>
+       /// <param name="id">The id of the position.</param>
+       /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin, Employee")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -186,6 +207,11 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Shows the apply position dialog.
+        /// </summary>
+        /// <param name="id">The id of the position.</param>
+        /// <returns>An action result.</returns>
         [Authorize(Roles = "Admin, Employee, Candidate")]
         [HttpPost]
         public async Task<ActionResult> ApplyDialog(int id)
@@ -219,6 +245,11 @@ namespace ApplicationSite.Controllers
             return PartialView(appliedCandidateViewModel);
         }
 
+        /// <summary>
+        /// Confirms the application of a user.
+        /// </summary>
+        /// <param name="appliedCandidateViewModel">The applied candidate view model.</param>
+        /// <returns>An action result.</returns>
         [HttpPost, ActionName("Apply")]
         [Authorize(Roles = "Admin, Employee, Candidate")]
         public async Task<ActionResult> ApplyConfirmed(
@@ -270,6 +301,11 @@ namespace ApplicationSite.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Confirms the candidate has withdrawn their application.
+        /// </summary>
+        /// <param name="id">The id of the position.</param>
+        /// <returns>A action result.</returns>
         [HttpPost]
         [Authorize(Roles = "Admin, Employee, Candidate")]
         public async Task<ActionResult> WithdrawDialog(int id)

@@ -35,7 +35,7 @@ namespace ApplicationSite.Controllers
             positionListVm.MapTo(positions);
             return View(positionListVm);
         }
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+
         [AllowAnonymous]
         public async Task<ActionResult> Details(int id)
         {
