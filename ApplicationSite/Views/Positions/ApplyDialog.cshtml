@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Apply";
 }
-<div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -13,7 +12,7 @@
             @if (Model.ResumeSelectList.Any())
             {
                 <h4>Select the resume you wish to submit. Then click "Apply". That's it! It's that simple!</h4>
-                using (Html.BeginForm())
+                using (Html.BeginForm("Apply", "Positions"))
                 {
                     @Html.AntiForgeryToken()
 
@@ -55,4 +54,3 @@
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
-</div>

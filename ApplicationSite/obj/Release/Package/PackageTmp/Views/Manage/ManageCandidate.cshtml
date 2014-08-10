@@ -76,15 +76,9 @@
             <div class="list-group">
                 @foreach (AppliedCandidates item in Model.AppliedForPositions)
                 {
-                    var withdrawContainer = "widthdrawContainer" + item.Position.Id;
-                    var withdrawModal = "withdrawModal" + item.Position.Id;
                     <div class="list-group-item">
                         <h4 class="list-group-item-heading">@item.Position.Title</h4>
-                        <button id="withdrawButton" class="btn btn-default" onclick="setupSiteModal('#@withdrawContainer', '#@withdrawModal'); " type="button" title="Withdraw">Withdraw</button>
-                    </div>
-                    <div id="@withdrawModal"  class='modal fade in' data-url='@Url.Action("Withdraw", "Positions", new {id = item.Position.Id}, null)'>
-                        <div id='@withdrawContainer'>
-                        </div>
+                        <button id="withdrawButton" data-url='@Url.Action("WithdrawDialog", "Positions", new {id = item.Position.Id}, null)' class="btn btn-default" onclick="setupSiteModal('#resumeContainer', '#resumeModal', '#withdrawButton' ); " type="button" title="Withdraw">Withdraw</button>
                     </div>
                 }
             </div>

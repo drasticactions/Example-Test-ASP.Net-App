@@ -224,7 +224,7 @@
     <Content Include="Views\Resumes\Delete.cshtml" />
     <Content Include="Views\Resumes\Details.cshtml" />
     <Content Include="Views\Resumes\Edit.cshtml" />
-    <Content Include="Views\Positions\Apply.cshtml" />
+    <Content Include="Views\Positions\ApplyDialog.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Web.config" />
@@ -243,7 +243,7 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\PositionsList\Index.cshtml" />
     <Content Include="Views\PositionsList\Details.cshtml" />
-    <Content Include="Views\Positions\Withdraw.cshtml" />
+    <Content Include="Views\Positions\WithdrawDialog.cshtml" />
     <Content Include="Views\Positions\ApplySuccess.cshtml" />
     <Content Include="Views\Positions\WithdrawSuccess.cshtml" />
     <None Include="Properties\PublishProfiles\drasticactionsinc.pubxml" />

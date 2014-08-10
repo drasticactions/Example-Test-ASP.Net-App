@@ -186,10 +186,9 @@ namespace ApplicationSite.Controllers
             return RedirectToAction("Index");
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         [Authorize(Roles = "Admin, Employee, Candidate")]
-        [HttpGet]
-        public async Task<ActionResult> Apply(int id)
+        [HttpPost]
+        public async Task<ActionResult> ApplyDialog(int id)
         {
             // If user enters apply URL directly, do server side validation to see if they have already applied.
             ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
@@ -220,15 +219,16 @@ namespace ApplicationSite.Controllers
             return PartialView(appliedCandidateViewModel);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Apply")]
         [Authorize(Roles = "Admin, Employee, Candidate")]
-        public async Task<ActionResult> Apply(
+        public async Task<ActionResult> ApplyConfirmed(
             [Bind(Include = "DefaultSelectItem,Position,CurrentUser")] AppliedCandidateViewModel
                 appliedCandidateViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(appliedCandidateViewModel);
+                // TODO: Fix if the model state fails.
+                return RedirectToAction("ApplySuccess", "Positions");
             }
             IdentityUser user = await _db.Users.FirstAsync(node => node.Id == appliedCandidateViewModel.CurrentUser.Id);
             Positions position =
@@ -270,10 +270,9 @@ namespace ApplicationSite.Controllers
             base.Dispose(disposing);
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin, Employee, Candidate")]
-        public async Task<ActionResult> Withdraw(int id)
+        public async Task<ActionResult> WithdrawDialog(int id)
         {
             ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
             AppliedCandidates appliedCandidate =
