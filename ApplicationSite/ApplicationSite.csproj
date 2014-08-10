@@ -254,6 +254,8 @@
     <Content Include="Views\Emails\PositionReopened.cshtml" />
     <Content Include="Views\Emails\PositionReopened.Html.cshtml" />
     <Content Include="Views\Emails\PositionClosed.cshtml" />
+    <Content Include="Views\Errors\InternalError.cshtml" />
+    <Content Include="Views\Errors\PageNotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -311,6 +313,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppliedCandidateController.cs" />
+    <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
@@ -377,6 +380,7 @@
       <DependentUpon>201408082358026_AppliedCandidate2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

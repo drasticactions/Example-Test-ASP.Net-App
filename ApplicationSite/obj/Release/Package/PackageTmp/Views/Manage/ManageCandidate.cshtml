@@ -5,6 +5,7 @@
 }
 
 <div class="row">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="col-lg-4">
         <h3>Unused Resumes</h3>
         @if (Model.Resumes.Any())
