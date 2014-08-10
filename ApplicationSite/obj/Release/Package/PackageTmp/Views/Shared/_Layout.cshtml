@@ -14,8 +14,8 @@
             <div class="modal-dialog" id='resumeContainer'>
             </div>
         </div>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
@@ -24,6 +24,10 @@
                     </button>
                 </div>
                 <div class="navbar-collapse collapse">
+                    <a class="navbar-brand" rel="home" href="@Url.Action("Index", "Home")" title="Buy Sell Rent Everyting">
+                        <img style="max-width:50px; margin-top: -15px;"
+                             src="/Images/Logo.png">
+                    </a>
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Dumb Starbucks", "Index", "Home")</li>
                         <li>@Html.ActionLink("Positions", "Index", "PositionsList")</li>

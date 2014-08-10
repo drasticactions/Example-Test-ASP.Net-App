@@ -18,14 +18,14 @@
                         <dl class="dl-horizontal">
                             <dt>Title</dt>
                             <dd>@Html.DisplayFor(modelItem => item.Position.Title)</dd>
-                            <dt>Candidate</dt>
-                            <dd>@Html.DisplayFor(modelItem => item.User.UserName)</dd>
+                            <dt>Candidate Email</dt>
+                            <dd>@Html.DisplayFor(modelItem => item.User.Email)</dd>
                             <dt>Candidate Status</dt>
                             <dd>@Html.DisplayFor(modelItem => item.AppliedCandidateState)</dd>
                             <dt>Applied Date</dt>
                             <dd>@Html.DisplayFor(modelItem => item.AppliedTime)</dd>
                             <dt>Resume</dt>
-                            <dd><button class="btn btn-default" onclick=" location.href = '@Url.Action("Download", "Resumes", new {id = item.Resume.Id}, null)' " type="button" title="Download Resume">Download Resume</button></dd>
+                            <dd><button class="btn btn-default" onclick="location.href = '@Url.Action("Download", "Resumes", new {id = item.Resume.Id}, null)' " type="button" title="Download Resume">Download Resume</button></dd>
                             <dt>Options</dt>
                             <dd>
                                 @Html.ActionLink("Edit", "Edit", "AppliedCandidate", new {id = item.Id}, null) |
