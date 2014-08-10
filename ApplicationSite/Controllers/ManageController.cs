@@ -102,6 +102,11 @@ namespace ApplicationSite.Controllers
         [HttpGet]
         public ActionResult ManageCandidate(string sortOrder)
         {
+            var errorMessage = TempData["ErrorMessage"] as string;
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+               ModelState.AddModelError("", errorMessage);
+            }
             string userId = User.Identity.GetUserId();
             var appliedForPositions =
                 _db.AppliedCandidates.Where(node => node.User.Id.Equals(userId));

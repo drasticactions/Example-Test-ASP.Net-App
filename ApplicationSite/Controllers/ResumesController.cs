@@ -66,13 +66,13 @@ namespace ApplicationSite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(resume);
+                return RedirectToAction("ManageCandidate", "Manage");
             }
 
             if (resumeFile == null)
             {
-                ModelState.AddModelError("", Resources.Resources.ResumeNotUploaded);
-                return View(resume);
+                TempData["ErrorMessage"] = Resources.Resources.ResumeNotUploaded;
+                return RedirectToAction("ManageCandidate", "Manage");
             }
 
             IdentityUser currentUser = _db.Users.Find(User.Identity.GetUserId());
@@ -81,8 +81,8 @@ namespace ApplicationSite.Controllers
             // want users uploading things that are not pdfs.
             if (!resumeFile.ContentType.Equals("application/pdf"))
             {
-                ModelState.AddModelError("", Resources.Resources.WrongFiletype);
-                return View(resume);
+                TempData["ErrorMessage"] = Resources.Resources.WrongFiletype;
+                return RedirectToAction("ManageCandidate", "Manage");
             }
 
             var newResume = new Resume
@@ -91,8 +91,6 @@ namespace ApplicationSite.Controllers
                 FileName = Path.GetFileName(resumeFile.FileName),
                 User = (ApplicationUser) currentUser
             };
-
-            if (!ModelState.IsValid) return View(resume);
 
             string resumeFilePath = string.Empty;
             if (resumeFile.ContentLength > 0)
